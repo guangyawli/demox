@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    Home
+{% endblock  %}
+
 {% block content %}
 
 <div class="jumbotron">
     <h1>Home</h1>
-    <p class="lead">This example is a quick demo to illustrate how django authentication works.</p>
-    <a class="btn btn-lg btn-primary" href="#" role="button">登入&#187;</a>
+    <p class="lead">Hello world!!</p>
+    <a class="btn btn-lg btn-primary" href="/accounts/register" role="button">註冊&#187;</a>
+    <a class="btn btn-lg btn-primary" href="/accounts/login" role="button">登入&#187;</a>
+    <a class="btn btn-lg btn-primary" href="/accounts/logout" role="button">登出&#187;</a>
 </div>
 
 {% endblock  %}
