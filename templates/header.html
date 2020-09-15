@@ -4,8 +4,30 @@
                 PLUS
         </div>
         <ul class="navbar-nav mr-auto">
+        {% if request.user.is_authenticated %}
             <li class="nav-item active">
-             <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                <a class="btn btn-lg btn-primary" href="/" role="button"> 首頁 </a>
+            </li>
+            <li class="nav-item active">
+                <a class="btn btn-lg btn-primary" href="/blogs" role="button"> 精選文章 </a>
+            </li>
+            <li class="nav-item active">
+                <a class="btn btn-lg btn-primary" href="/" role="button"> 精選專案 </a>
+            </li>
+            <li class="nav-item active">
+                <a class="btn btn-lg btn-primary" href="/projects" role="button"> 我的專案 </a>
+            </li>
+            <li class="nav-item active">
+                <a class="btn btn-lg btn-primary" href="/accounts/profile" role="button"> 我的資料 </a>
+            </li>
+        {% endif %}
+            <li class="nav-item active">
+                 {% if not request.user.is_authenticated %}
+                     <a class="btn btn-lg btn-primary" href="/accounts/register" role="button"> 註冊 </a>
+                     <a class="btn btn-lg btn-primary" href="/accounts/login" role="button"> 登入 </a>
+                 {% else %}
+                     <a class="btn btn-lg btn-primary" href="/accounts/logout" role="button"> 登出 </a>
+                 {% endif %}
             </li>
         </ul>
     </div>

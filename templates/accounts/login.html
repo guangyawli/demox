@@ -3,11 +3,12 @@
 {% block content %}
 
 <h1>登入</h1>
-
+{% if err_msg %}
+    <h2>{{ err_msg }}</h2>
+{% endif %}
 <form action="" method="POST">
     {% csrf_token %}
     {{ form }}
-
     <input class="btn btn-primary" type="submit" value="登入" />
     <p>還沒有帳號嗎? <a href="{% url 'Register' %}">註冊</a></p>
 </form>

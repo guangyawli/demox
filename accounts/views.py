@@ -1,6 +1,3 @@
-from django.shortcuts import render
-
-# Create your views here.
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -8,7 +5,11 @@ from .forms import RegisterForm, LoginForm
 
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'index.html', locals())
+
+
+def my_profile(request):
+    return render(request, 'accounts/profile.html', locals())
 
 
 def sign_up(request):
@@ -17,7 +18,7 @@ def sign_up(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            redirect(reverse('home'))
+            redirect('home')
     context = {
         'form': form
     }
@@ -25,6 +26,7 @@ def sign_up(request):
 
 
 def sign_in(request):
+    err_msg = ''
     form = LoginForm()
     if request.method == "POST":
         username = request.POST.get("username")
@@ -32,13 +34,17 @@ def sign_in(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            redirect(reverse('home'))
+            err_msg = 'Login pass'
+            return redirect('home')
+        else:
+            err_msg = 'Login fail'
     context = {
-        'form': form
+        'form': form,
+        'err_msg': err_msg,
     }
     return render(request, 'accounts/login.html', context)
 
 
 def log_out(request):
     logout(request)
-    return redirect(reverse('home'))
+    return redirect('home')
