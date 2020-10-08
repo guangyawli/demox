@@ -1,0 +1,40 @@
+/*DEMOX styles*/
+/*通用*/
+body.gray{background-color: rgb(233, 236, 243);}
+html {height: 100%;}
+body {min-height: 100%;}
+section{margin-top: 40px;}
+section.clear{margin-top:80px }
+section.bottom{margin-bottom:80px }
+button:focus{outline: none;}
+h2.title{
+    font-weight: 900;
+    margin-bottom: 2px;
+}
+h3.title{
+    font-weight: 900;
+    margin-bottom: 2px;
+    color: #397197;
+    font-size: 20px;
+    margin-top: 20px;
+}
+p.sub_title{
+    font-weight: 600;
+    color: #397197;
+}
+
+.content-box{
+    border-radius: 20px;
+    box-shadow: 3px 2px 5px #d0d3d9;
+    padding: 30px 20px 30px 20px;
+    background-color: white;
+    margin-top: 20px;
+}
+.content-box-no-bgc{
+    margin-top: 20px;
+    padding: 0px 20px 30px 20px;
+}
+.cursor_p{
+    cursor: pointer;
+}
+

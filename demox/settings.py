@@ -25,7 +25,7 @@ SECRET_KEY = 'rn41)2*=87vqay(ibzat7w38b62a4293h8vu=!r(@t8l^*fo4%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['demox.twshop.asia']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'projects',
-    'blogs',
+    'idea',
 ]
 
 MIDDLEWARE = [
@@ -87,8 +87,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'demox_db',
-        'USER': 'xyaw',
-        'PASSWORD': '',
+        'USER': 'root',
+        'PASSWORD': 'password',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -133,3 +133,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'root_static/')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'common_static/'),
+)
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

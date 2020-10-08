@@ -1,15 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<h1>註冊</h1>
-
-<form action="" method="POST">
-    {% csrf_token %}
-    {{ form }}
-
-    <br />
-    <input class="btn btn-success" type="submit" value="註冊" />
-</form>
-
+<section class="bottom" id="table-section">
+        <div class="container">
+            <h2 class="title">註冊</h2>
+            <p class="sub_title"></p>
+            <div class="content-box table-responsive">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button class="btn btn-outline-info" type="submit" >註冊 </button>
+                </form>
+                <hr>
+                <h3 class="title">如您已經有註冊過，請前往 <a href="{% url 'Login' %}">登入</a></h3>
+            </div>
+        </div>
+    </section>
 {% endblock  %}

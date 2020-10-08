@@ -15,8 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from projects.views import index
+from projects.views import index, rated_projects
 
 urlpatterns = [
     path('', index, name='projects_home'),
+    path('rated_projects', rated_projects, name='Rated_projects'),
 ]

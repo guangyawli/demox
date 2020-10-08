@@ -1,21 +1,243 @@
 {% extends 'base.html' %}
-
-{% block title %}
-    Profile
-{% endblock  %}
-
+{% block title %}我的資料{% endblock  %}
 {% block content %}
-
-<div class="jumbotron">
-    <h1>Profile</h1>
-    <p class="lead">本平台可以藉由『Openedu』透過OAuth授權登入，也可以藉由本平台之帳號密碼登入。<br>
-學生帳號：<br>
-    學生需填寫『帳號』、『密碼』、『電子信箱(需認證)』。選填『真實姓名』、『所屬/任職學校』、『系所』。可於此處『變更密碼』，唯讀欄位：『職位(學生、教師)』<br>
-
-教師帳號：<br>
-    教師需填寫『帳號』、『密碼』、『電子信箱(需認證)』、『真實姓名』、『所屬/任職學校』、『系所』、『教師URL』。可於此處『變更密碼』、唯讀欄位：『職位(學生、教師)』<br>
-   </p>
-
-</div>
-
+    <section class="bottom" id="table-section">
+        <div class="container">
+            <h2 class="title">我的資料</h2>
+            <p class="sub_title">檢視我的個人資訊</p>
+            <div class="content-box table-responsive">
+                <form>
+                      <h3 class="title">隊伍資料</h3>
+                      <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">隊伍名稱(不得提及校名或敏感字眼)</label>
+                          <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">作品主題(大致說明作品內容與主題)</label>
+                          <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">隊伍主要大學</label>
+                          <input type="text" class="form-control" id="validationDefault02" placeholder="ex：逢甲大學" value="" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">隊伍人數(含隊長)</label>
+                          <select class="form-control" name="" id="player_num" required>
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                          </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">指導教授</label>
+                          <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                        </div>
+                      </div>
+                      <hr>
+                      <h3 class="title">隊長(主聯絡人)</h3>
+                      <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">姓名</label>
+                          <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">學校</label>
+                          <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">系所</label>
+                          <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">年級</label>
+                          <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                         <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">電子信箱</label>
+                          <input type="email" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault03">行動電話</label>
+                          <input type="phone" class="form-control" id="validationDefault02" placeholder="" value="">
+                        </div>
+                      </div>
+                      <hr>
+                      <div class="" id="player1">
+                          <h3 class="title">隊員1(副聯絡人)</h3>
+                          <div class="form-row">
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">姓名</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">學校</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">系所</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">年級</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                             <div class="col-md-6 mb-3">
+                              <label for="validationDefault02">電子信箱</label>
+                              <input type="email" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                              <label for="validationDefault03">行動電話</label>
+                              <input type="phone" class="form-control" id="validationDefault02" placeholder="" value="">
+                            </div>
+                          </div>
+                      </div>
+                      <div class="" id="player2">
+                          <h3 class="title">隊員2</h3>
+                          <div class="form-row">
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">姓名</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">學校</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">系所</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">年級</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                             <div class="col-md-6 mb-3">
+                              <label for="validationDefault02">電子信箱</label>
+                              <input type="email" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                              <label for="validationDefault03">行動電話</label>
+                              <input type="phone" class="form-control" id="validationDefault02" placeholder="" value="">
+                            </div>
+                          </div>
+                      </div>
+                      <div class="" id="player3">
+                          <h3 class="title">隊員3</h3>
+                          <div class="form-row">
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">姓名</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">學校</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">系所</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">年級</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                             <div class="col-md-6 mb-3">
+                              <label for="validationDefault02">電子信箱</label>
+                              <input type="email" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                              <label for="validationDefault03">行動電話</label>
+                              <input type="phone" class="form-control" id="validationDefault02" placeholder="" value="">
+                            </div>
+                          </div>
+                      </div>
+                      <div class="" id="player4">
+                          <h3 class="title">隊員4</h3>
+                          <div class="form-row">
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">姓名</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">學校</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">系所</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                              <label for="validationDefault02">年級</label>
+                              <input type="text" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                             <div class="col-md-6 mb-3">
+                              <label for="validationDefault02">電子信箱</label>
+                              <input type="email" class="form-control" id="validationDefault02" placeholder="" value="" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                              <label for="validationDefault03">行動電話</label>
+                              <input type="phone" class="form-control" id="validationDefault02" placeholder="" value="">
+                            </div>
+                          </div>
+                      </div>
+                      <button class="btn btn-primary" type="submit">送出</button>
+                </form>
+            </div>
+        </div>
+    </section>
 {% endblock  %}
+{% block JScontent %}
+    <script>
+        $(function() {
+          let player_num = $('#player_num').val();
+          hide_player(player_num)
+        });
+        $('#player_num').change(function (){
+            let player_num = $('#player_num').val();
+            hide_player(player_num)
+        });
+        function hide_player(player_num){
+            if(player_num == 1){
+              $('#player1').hide();
+              $('#player2').hide();
+              $('#player3').hide();
+              $('#player4').hide();
+            }
+            else if (player_num == 2){
+              $('#player1').show();
+              $('#player2').hide();
+              $('#player3').hide();
+              $('#player4').hide();
+            }
+            else if (player_num == 3){
+              $('#player1').show();
+              $('#player2').show();
+              $('#player3').hide();
+              $('#player4').hide();
+            }
+            else if (player_num == 4){
+              $('#player1').show();
+              $('#player2').show();
+              $('#player3').show();
+              $('#player4').hide();
+            }
+            else if (player_num == 5){
+              $('#player1').show();
+              $('#player2').show();
+              $('#player3').show();
+              $('#player4').show();
+            }
+        }
+    </script>
+{% endblock %}
