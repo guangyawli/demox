@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    新增隊伍
+{% endblock  %}
+
+{% block content %}
+<div>
+    <form method="post" enctype="multipart/form-data".>
+        {% csrf_token %}
+        <div>{{ form.team_name.label }}   {{ form.team_name }}</div>
+        <div>{{ form.team_topic.label }}{{ form.team_topic }}</div>
+        <div>{{ form.team_school.label }}{{ form.team_school }}</div>
+        <div>{{ form.team_teacher.label }}{{ form.team_teacher }}</div>
+        <div>{{ form.video_link.label }}{{ form.video_link }}</div>
+        <div>{{ form.readme.label }}{{ form.readme }}</div>
+        <div>{{ form.leader }}</div>
+        <input type="submit" value="submit"/>
+    </form>
+</div>
+{% endblock  %}
+
+

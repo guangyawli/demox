@@ -18,11 +18,9 @@ def sign_up(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            redirect('home')
-    context = {
-        'form': form
-    }
-    return render(request, 'accounts/register.html', context)
+            return redirect('Login')
+
+    return render(request, 'accounts/register.html', locals())
 
 
 def sign_in(request):
@@ -38,11 +36,8 @@ def sign_in(request):
             return redirect('home')
         else:
             err_msg = 'Login fail'
-    context = {
-        'form': form,
-        'err_msg': err_msg,
-    }
-    return render(request, 'accounts/login.html', context)
+
+    return render(request, 'accounts/login.html', locals())
 
 
 def log_out(request):
