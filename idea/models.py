@@ -43,14 +43,17 @@ class Team(models.Model):
         return self.team_name
 
 
-# class TeamMember(models.Model):
-#     team_name = models.ForeignKey(Team, on_delete=models.CASCADE)
-#     member_name = models.CharField(max_length=30)
-#     school_name = models.CharField(max_length=50)
-#     department_name = models.CharField(max_length=30)
-#     department_grade = models.CharField(max_length=10)
-#     phone_number = models.CharField(max_length=20)
-#     email_addr = models.EmailField()
+class TeamMember(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    member_name = models.CharField(max_length=30)
+    school_name = models.CharField(max_length=50)
+    department_name = models.CharField(max_length=30)
+    department_grade = models.CharField(max_length=10)
+    phone_number = models.CharField(max_length=20)
+    email_addr = models.EmailField()
+
+    def __str__(self):
+        return self.team.team_name
 
 
 class TeamScore(models.Model):

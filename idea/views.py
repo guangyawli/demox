@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from .forms import TeamDataForm, MemberTempForm
+from .forms import TeamDataForm, TeamMember, MemberTempForm
 from .models import Team, MemberTemp
 # from django.contrib import messages
 # Create your views here.
@@ -66,3 +66,22 @@ def team_data_modify(request):
 
     return render(request, 'accounts/profile.html', locals())
 
+
+def show_team(request):
+    check_team = Team.objects.filter(leader=request.user)
+    if check_team.exists():
+        target_team = Team.objects.get(leader=request.user)
+        target_members = TeamMember.objects.filter(team__team_name=target_team.team_name)
+        if request.method == "POST":
+            error_message = 'request.method POST'
+        else:
+            error_message = 'only show data'
+            form = TeamDataForm(instance=target_team)
+            member_count = target_members.count()
+            if member_count == 0:
+                error_message = 'no member'
+
+    else:
+        error_message = 'no team'
+
+    return render(request, 'idea/show_team.html', locals())

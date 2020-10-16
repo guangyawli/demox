@@ -36,7 +36,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{% url  'file_list' %}">我的作品</a>
-                    <a class="dropdown-item" href="{% url  'team_data_modify' %}">我的資料</a>
+                    <a class="dropdown-item" href="{% url  'show_team' %}">隊伍資料</a>
                     <a class="dropdown-item" href="{% url  'Logout' %}">登出</a>
                 </div>
               </li>
@@ -51,7 +51,8 @@
             </div>
         </div>
     </nav>
-
+    {% block error_content %}
+    {% endblock %}
     {% block content %}
     {% endblock %}
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" ></script>

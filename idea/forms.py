@@ -1,5 +1,5 @@
 from django import forms
-from .models import Team, MemberTemp
+from .models import Team, MemberTemp, TeamMember
 
 
 class TeamDataForm(forms.ModelForm):
@@ -16,15 +16,6 @@ class TeamDataForm(forms.ModelForm):
             'video_link': forms.URLInput(attrs={'class': 'form-control'}),
             'readme': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'affidavit': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-        }
-        labels = {
-            'team_name': '隊伍名稱',
-            'team_topic': '作品主題',
-            'team_school': '隊伍學校',
-            'team_teacher': '指導教授',
-            'readme': '說明文件(pdf)',
-            'video_link': '影片連結',
-            'affidavit': '切結書',
         }
 
     def clean_readme(self):
@@ -45,19 +36,19 @@ class TeamDataForm(forms.ModelForm):
             # return cleaned data is very important.
             return file
 
-#
-# class TeamMemberForm(forms.ModelForm):
-#     class Meta:
-#         model = TeamMember
-#         exclude = ['team_name']
-#         widgets = {
-#             'member_name': forms.TextInput(attrs={'class': 'form-control'}),
-#             'school_name': forms.TextInput(attrs={'class': 'form-control'}),
-#             'department_name': forms.TextInput(attrs={'class': 'form-control'}),
-#             'department_grade': forms.TextInput(attrs={'class': 'form-control'}),
-#             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
-#             'email_addr': forms.EmailInput(attrs={'class': 'form-control'}),
-#         }
+
+class TeamMemberForm(forms.ModelForm):
+    class Meta:
+        model = TeamMember
+        exclude = ['team_name']
+        widgets = {
+            'member_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'school_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'department_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'department_grade': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'email_addr': forms.EmailInput(attrs={'class': 'form-control'}),
+        }
 
 
 class MemberTempForm(forms.ModelForm):
