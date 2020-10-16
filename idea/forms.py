@@ -5,7 +5,8 @@ from .models import Team, MemberTemp
 class TeamDataForm(forms.ModelForm):
     class Meta:
         model = Team
-        fields = ('team_name', 'team_topic', 'team_school', 'team_teacher', 'leader', 'video_link', 'readme')
+        fields = ('team_name', 'team_topic', 'team_school', 'team_teacher', 'leader', 'video_link', 'readme',
+                  'affidavit')
         widgets = {
             'team_name': forms.TextInput(attrs={'class': 'form-control'}),
             'team_topic': forms.TextInput(attrs={'class': 'form-control'}),
@@ -14,6 +15,7 @@ class TeamDataForm(forms.ModelForm):
             'leader': forms.HiddenInput(attrs={'class': 'form-control'}),
             'video_link': forms.URLInput(attrs={'class': 'form-control'}),
             'readme': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'affidavit': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
         labels = {
             'team_name': '隊伍名稱',
@@ -22,11 +24,21 @@ class TeamDataForm(forms.ModelForm):
             'team_teacher': '指導教授',
             'readme': '說明文件(pdf)',
             'video_link': '影片連結',
+            'affidavit': '切結書',
         }
 
     def clean_readme(self):
         if self.cleaned_data['readme']:
             file = self.cleaned_data['readme']
+            ext = file.name.split('.')[-1].lower()
+            if ext not in ["pdf"]:
+                raise forms.ValidationError("Only pdf files are allowed.")
+            # return cleaned data is very important.
+            return file
+
+    def clean_affidavit(self):
+        if self.cleaned_data['affidavit']:
+            file = self.cleaned_data['affidavit']
             ext = file.name.split('.')[-1].lower()
             if ext not in ["pdf"]:
                 raise forms.ValidationError("Only pdf files are allowed.")
@@ -51,7 +63,7 @@ class TeamDataForm(forms.ModelForm):
 class MemberTempForm(forms.ModelForm):
     class Meta:
         model = MemberTemp
-        exclude = ['team_name']
+        exclude = ['team']
         widgets = {
             'player_num': forms.Select(attrs={'class': 'form-control', 'id': "player_num"}),
             'member_name1': forms.TextInput(attrs={'class': 'form-control'}),
@@ -86,10 +98,3 @@ class MemberTempForm(forms.ModelForm):
             'email_addr5': forms.EmailInput(attrs={'class': 'form-control'})
         }
 
-    def clean_file(self):
-        file = self.cleaned_data['file']
-        ext = file.name.split('.')[-1].lower()
-        if ext not in ["pdf"]:
-            raise forms.ValidationError("Only pdf files are allowed.")
-        # return cleaned data is very important.
-        return file

@@ -8,6 +8,11 @@
             <div class="content-box table-responsive">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
+                    {# 暫存#}
+                    {{ form.readme }}
+                    {{ form.affidavit }}
+                    {{ form.video_link }}
+                    {# 暫存--end  #}
                       <h3 class="title">隊伍資料</h3>
                       <div class="form-row">
                         <div class="col-md-6 mb-3">
@@ -25,13 +30,6 @@
                         <div class="col-md-3 mb-3">
                           <label for="validationDefault02">隊伍人數(含隊長)</label>
                           {{ mem1.player_num }}
-{#                          <select class="form-control" name="{{ mem1.player_num }}" id="player_num" required>#}
-{#                              <option value="1">1</option>#}
-{#                              <option value="2">2</option>#}
-{#                              <option value="3">3</option>#}
-{#                              <option value="4">4</option>#}
-{#                              <option value="5">5</option>#}
-{#                          </select>#}
                         </div>
                         <div class="col-md-6 mb-3">
                           <label for="validationDefault02">指導教授</label>

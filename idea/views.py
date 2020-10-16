@@ -11,7 +11,17 @@ def index(request):
 
 
 def file_list(request):
-    files = Team.objects.all().order_by("-id")
+    # 隊長編輯
+    check_team = Team.objects.filter(leader=request.user).exists()
+    if check_team:
+        target_team = Team.objects.get(leader=request.user)
+        if target_team.readme and target_team.video_link and target_team.affidavit:
+            files = target_team
+        else:
+            files = None
+    else:
+        files = None
+
     return render(request, 'idea/file_list.html', {'files': files})
 
 
@@ -20,7 +30,7 @@ def team_data_modify(request):
     if check_team.exists():
         # 修改資料
         target_team = Team.objects.get(leader=request.user)
-        target_mem1 = MemberTemp.objects.get(team_name__team_name=target_team.team_name)
+        target_mem1 = MemberTemp.objects.get(team__team_name=target_team.team_name)
         if request.method == "POST":
             form = TeamDataForm(request.POST, request.FILES, instance=target_team)
             mem1 = MemberTempForm(request.POST, instance=target_mem1)
@@ -28,7 +38,7 @@ def team_data_modify(request):
                 tmp = form.save(commit=False)
                 form.save()
                 t1 = mem1.save(commit=False)
-                t1.team_name = tmp
+                t1.team = tmp
                 t1.save()
                 return redirect("team_data_modify")
             else:
@@ -45,7 +55,7 @@ def team_data_modify(request):
                 tmp = form.save(commit=False)
                 form.save()
                 t1 = mem1.save(commit=False)
-                t1.team_name = tmp
+                t1.team = tmp
                 t1.save()
                 return redirect("team_data_modify")
             else:
