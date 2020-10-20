@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block title %}我的資料{% endblock  %}
+{% block error_content %}
+    <div class="container-fluid">
+        {% if error_message %}
+            <div>{{ error_message }}</div>
+        {% endif %}
+        {% if error_link %}
+            <p>Please click <a href="{% url error_link %}">here</a>
+        {% endif %}
+
+    </div>
+{% endblock %}
+{% block content %}
+    <section class="bottom" id="table-section">
+        <div class="container">
+            <h2 class="title">新增隊伍</h2>
+            <p class="sub_title">新增隊伍資訊</p>
+            <div class="content-box table-responsive">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                      <h3 class="title">隊伍資料</h3>
+                      <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">隊伍名稱(不得提及校名或敏感字眼)</label>
+                          {{ form.team_name }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">作品主題(大致說明作品內容與主題)</label>
+                          {{ form.team_topic }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">隊伍主要大學</label>
+                          {{ form.team_school }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">隊伍人數(含隊長)</label>
+                          {{ mem1.player_num }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">指導教授</label>
+                          {{ form.team_teacher }}
+                        </div>
+                      </div>
+                      <hr>
+                      <h3 class="title">隊長(主聯絡人)</h3>
+                      <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">姓名</label>
+                          {{ mem1.member_name }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">學校</label>
+                          {{ mem1.school_name }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">系所</label>
+                          {{ mem1.department_name }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">年級</label>
+                          {{ mem1.department_grade }}
+                        </div>
+                      </div>
+                      <div class="form-row">
+                         <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">電子信箱</label>
+                          {{ mem1.email_addr }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault03">行動電話</label>
+                          {{ mem1.phone_number }}
+                        </div>
+                      </div>
+                      <hr>
+                      <button class="btn btn-primary" type="submit">送出</button>
+                      {# 隱藏欄位 #}
+                    <div>{{ form.leader }}</div>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock  %}
+{% block JScontent %}
+    <script>
+        $(function() {
+          let player_num = $('#player_num').val();
+          hide_player(player_num)
+        });
+        $('#player_num').change(function (){
+            let player_num = $('#player_num').val();
+            hide_player(player_num)
+        });
+        function hide_player(player_num){
+            if(player_num == 1){
+              $('#player1').hide();
+              $('#player2').hide();
+              $('#player3').hide();
+              $('#player4').hide();
+            }
+            else if (player_num == 2){
+              $('#player1').show();
+              $('#player2').hide();
+              $('#player3').hide();
+              $('#player4').hide();
+            }
+            else if (player_num == 3){
+              $('#player1').show();
+              $('#player2').show();
+              $('#player3').hide();
+              $('#player4').hide();
+            }
+            else if (player_num == 4){
+              $('#player1').show();
+              $('#player2').show();
+              $('#player3').show();
+              $('#player4').hide();
+            }
+            else if (player_num == 5){
+              $('#player1').show();
+              $('#player2').show();
+              $('#player3').show();
+              $('#player4').show();
+            }
+        }
+    </script>
+{% endblock %}

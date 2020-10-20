@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Team, MemberTemp, TeamMember, TeamScore
+from .models import Team, TeamMember, TeamScore
 
 
 class TeamAdmin(admin.ModelAdmin):
@@ -13,14 +13,14 @@ class TeamAdmin(admin.ModelAdmin):
 
 
 class TeamMemberAdmin(admin.ModelAdmin):
-    list_display = ('team', 'member_name', 'school_name', 'department_name', 'department_grade', 'phone_number',
+    list_display = ('id', 'team', 'member_name', 'school_name', 'department_name', 'department_grade', 'phone_number',
                     'email_addr')
-    list_filter = ("member_name", "department_name")
-    ordering = ("member_name",)
+    list_filter = ('team', "member_name", "department_name")
+    ordering = ('-id', "member_name",)
 
 
 admin.site.register(Team, TeamAdmin)
 admin.site.register(TeamMember, TeamMemberAdmin)
 
-admin.site.register(MemberTemp)
+# admin.site.register(MemberTemp)
 admin.site.register(TeamScore)

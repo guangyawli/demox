@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}隊伍資料{% endblock  %}
+{% block error_content %}
+    <div class="container-fluid">
+        {% if error_message %}
+            <div>{{ error_message }}</div>
+        {% endif %}
+        {% if error_link %}
+            <p>Please click <a href="{% url error_link %}">here</a>
+        {% endif %}
+
+    </div>
+{% endblock %}
+{% block content %}
+    {% if check_team %}
+        <div><p>新增隊員<a href="{% url 'add_member' %}">here</a></div>
+        <div><p>隊伍編輯<a href="{% url 'modify_team' %}">here</a></div>
+    <section class="bottom" id="table-section">
+        <div class="container">
+            <h2 class="title">隊伍資料</h2>
+            <p class="sub_title">檢視隊伍資訊</p>
+            <div class="content-box table-responsive">
+                  <div>
+                      <h3 class="title">隊伍資料</h3>
+                      <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">隊伍名稱(不得提及校名或敏感字眼)</label>
+                          {{ form.team_name }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">作品主題(大致說明作品內容與主題)</label>
+                          {{ form.team_topic }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">隊伍主要大學</label>
+                          {{ form.team_school }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">隊伍人數(含隊長)</label>
+                            <div> {{ real_member_num }} </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">指導教授</label>
+                          {{ form.team_teacher }}
+                        </div>
+                      </div>
+                      <hr>
+                  {% if target_members %}
+{#                          <label for="test">{{ member_count.numerator }}</label>#}
+                      {% for target_member in target_members %}
+{#                          <form method="post" enctype="multipart/form-data">#}
+                          {% if forloop.first %}
+                              <h3 class="title">隊長(主聯絡人)</h3>
+                          {% else %}
+                              <h3 class="title">隊員</h3>
+                          {% endif %}
+                      <div class="form-row">
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">姓名</label>
+                          {{ target_member.member_name }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">學校</label>
+                          {{ target_member.school_name }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">系所</label>
+                          {{ target_member.department_name }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">年級</label>
+                          {{ target_member.department_grade }}
+                        </div>
+                      </div>
+                      <div class="form-row">
+                         <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">電子信箱</label>
+                          {{ target_member.email_addr }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault03">行動電話</label>
+                          {{ target_member.phone_number }}
+                        </div>
+                      </div>
+
+{#                          <button class="btn btn-primary" type="submit">功能鍵</button>#}
+{#                          </form>#}
+                      {% endfor %}
+                      <hr>
+                  {% endif %}
+
+                  </div>
+
+            </div>
+        </div>
+    </section>
+    {% else %}
+    <p>No team yet. Please click <a href="{% url 'add_team' %}">here</a>
+        to add team.</p>
+    {% endif %}
+{% endblock  %}
+

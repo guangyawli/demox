@@ -51,6 +51,9 @@ class TeamMember(models.Model):
     department_grade = models.CharField(max_length=10)
     phone_number = models.CharField(max_length=20)
     email_addr = models.EmailField()
+    player_num = models.IntegerField(default=1)
+    # player_num = models.CharField(max_length=10, choices=(('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')),
+    #                               default='1')
 
     def __str__(self):
         return self.team.team_name
@@ -67,41 +70,3 @@ class TeamScore(models.Model):
     def __str__(self):
         return self.team.team_name
 
-
-class MemberTemp(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    player_num = models.CharField(max_length=10, choices=(('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')),
-                                  default='1')
-    member_name1 = models.CharField(max_length=30)
-    school_name1 = models.CharField(max_length=50)
-    department_name1 = models.CharField(max_length=30)
-    department_grade1 = models.CharField(max_length=10)
-    phone_number1 = models.CharField(max_length=20)
-    email_addr1 = models.EmailField(blank=True)
-    member_name2 = models.CharField(max_length=30, blank=True)
-    school_name2 = models.CharField(max_length=50, blank=True)
-    department_name2 = models.CharField(max_length=30, blank=True)
-    department_grade2 = models.CharField(max_length=10, blank=True)
-    phone_number2 = models.CharField(max_length=20, blank=True)
-    email_addr2 = models.EmailField(blank=True)
-    member_name3 = models.CharField(max_length=30, blank=True)
-    school_name3 = models.CharField(max_length=50, blank=True)
-    department_name3 = models.CharField(max_length=30, blank=True)
-    department_grade3 = models.CharField(max_length=10, blank=True)
-    phone_number3 = models.CharField(max_length=20, blank=True)
-    email_addr3 = models.EmailField(blank=True)
-    member_name4 = models.CharField(max_length=30, blank=True)
-    school_name4 = models.CharField(max_length=50, blank=True)
-    department_name4 = models.CharField(max_length=30, blank=True)
-    department_grade4 = models.CharField(max_length=10, blank=True)
-    phone_number4 = models.CharField(max_length=20, blank=True)
-    email_addr4 = models.EmailField(blank=True)
-    member_name5 = models.CharField(max_length=30, blank=True)
-    school_name5 = models.CharField(max_length=50, blank=True)
-    department_name5 = models.CharField(max_length=30, blank=True)
-    department_grade5 = models.CharField(max_length=10, blank=True)
-    phone_number5 = models.CharField(max_length=20, blank=True)
-    email_addr5 = models.EmailField(blank=True)
-
-    def __str__(self):
-        return self.team.team_name
