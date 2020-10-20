@@ -17,6 +17,8 @@
 {% endblock %}
 {% block content %}
     {% if files %}
+        <p>修改檔案 click <a href="{% url 'add_files' %}">here</a></p>
+
       <section class="bottom" id="table-section">
         <div class="container">
             <h2 class="title">我的作品</h2>
@@ -60,11 +62,40 @@
             </div>
         </div>
       </section>
-    {% else: %}
+    {% else %}
+        <section class="bottom" id="table-section">
+        <div class="container">
+            <h2 class="title">檔案上傳</h2>
+            <p class="sub_title">新增檔案</p>
+            <div class="content-box table-responsive">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                      <h3 class="title">隊伍資料</h3>
+                      <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">隊伍名稱(不得提及校名或敏感字眼)</label>
+                          {{ form.team_name }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">作品說明書</label>
+                          {{ form.readme }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">切結書</label>
+                          {{ form.affidavit }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                          <label for="validationDefault02">影片連結</label>
+                          {{ form.video_link }}
+                        </div>
+                      </div>
+                      <hr>
+                    <button class="btn btn-primary" type="submit">送出</button>
 
-    {% empty: %}
-    <p>No files uploaded yet. Please click <a href="{% url 'add_files' %}">here</a>
-        to upload files.</p>
+                </form>
+            </div>
+        </div>
+    </section>
     {% endif %}
     {#{% if files %}#}
     {#<table class="table table-striped">#}
@@ -101,7 +132,7 @@
     {% if files.readme %}
     var url = "{{ files.readme.url }}";
     {% else %}
-    var url = "http://demox.twshop.asia/media/files/fc63172b28.pdf";
+    var url = "";
     {% endif %}
     window.onload = pdfBox(current_page);
 

@@ -11,19 +11,18 @@ def index(request):
 
 
 def file_list(request):
-    # 隊長編輯
     check_team = Team.objects.filter(leader=request.user).exists()
     if check_team:
         target_team = Team.objects.get(leader=request.user)
         if target_team.readme and target_team.video_link and target_team.affidavit:
             files = target_team
+
         else:
-            files = None
+            return redirect('add_files')
     else:
-        files = None
+        return redirect('add_files')
 
     return render(request, 'idea/file_list.html', {'files': files})
-
 
 def show_team(request):
     check_team = Team.objects.filter(leader=request.user)
@@ -178,7 +177,6 @@ def modify_member(request):
 
 
 def add_files(request):
-    check_team = Team.objects.filter(leader=request.user)
     target_team = Team.objects.get(leader=request.user)
     if request.method == "POST":
         form = TeamFilesForm(request.POST, request.FILES, instance=target_team)
@@ -186,7 +184,16 @@ def add_files(request):
             form.save()
             # 回傳並顯示
             error_message = '檔案儲存成功'
-            files = form
+            check_team = Team.objects.filter(leader=request.user).exists()
+            if check_team:
+                target_team = Team.objects.get(leader=request.user)
+                if target_team.readme and target_team.video_link and target_team.affidavit:
+                    files = target_team
+                else:
+                    files = None
+            else:
+                files = None
+
         else:
             print('!!!! add_files error !!!')
             if form.errors:
