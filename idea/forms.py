@@ -65,3 +65,33 @@ class AddTeamMemberForm(forms.ModelForm):
             'email_addr': forms.EmailInput(attrs={'class': 'form-control'}),
         }
 
+
+class TeamFilesForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        exclude = ['team_topic', 'team_school', 'team_teacher', 'leader']
+        widgets = {
+            'team_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'video_link': forms.URLInput(attrs={'class': 'form-control'}),
+            'readme': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'affidavit': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean_readme(self):
+        if self.cleaned_data['readme']:
+            file = self.cleaned_data['readme']
+            ext = file.name.split('.')[-1].lower()
+            if ext not in ["pdf"]:
+                raise forms.ValidationError("Only pdf files are allowed.")
+            # return cleaned data is very important.
+            return file
+
+    def clean_affidavit(self):
+        if self.cleaned_data['affidavit']:
+            file = self.cleaned_data['affidavit']
+            ext = file.name.split('.')[-1].lower()
+            if ext not in ["pdf"]:
+                raise forms.ValidationError("Only pdf files are allowed.")
+            # return cleaned data is very important.
+            return file
+
