@@ -16,7 +16,6 @@ def file_list(request):
         target_team = Team.objects.get(leader=request.user)
         if target_team.readme and target_team.video_link and target_team.affidavit:
             files = target_team
-
         else:
             return redirect('add_files')
     else:
@@ -24,13 +23,14 @@ def file_list(request):
 
     return render(request, 'idea/file_list.html', {'files': files})
 
+
 def show_team(request):
     check_team = Team.objects.filter(leader=request.user)
     if check_team.exists():
         if request.method == "GET":
             target_team = Team.objects.get(leader=request.user)
             target_members = TeamMember.objects.filter(team__team_name=target_team.team_name)
-            form = TeamDataForm(instance=target_team)
+            form = target_team
             real_member_num = target_members.count()
             if real_member_num == 0:
                 error_message = 'no member'
@@ -111,6 +111,7 @@ def modify_team(request):
 
 
 def add_member(request):
+    target_title = '新增'
     check_team = Team.objects.filter(leader=request.user)
     target_team = Team.objects.get(leader=request.user)
     target_members = TeamMember.objects.filter(team__team_name=target_team.team_name)
@@ -143,40 +144,49 @@ def add_member(request):
 
 
 def modify_member(request):
+    target_title = '修改'
     check_team = Team.objects.filter(leader=request.user)
     target_team = Team.objects.get(leader=request.user)
     target_members = TeamMember.objects.filter(team__team_name=target_team.team_name)
-    if request.method == "POST":
-        mem2 = AddTeamMemberForm(request.POST)
-        if mem2.is_valid():
-            # 回傳並顯示
-            t1 = mem2.save(commit=False)
-            t1.team = target_members[0].team
-            t1.player_num = target_members.count()
-            t1.save()
-            # error_message = '新增隊員成功'
-            # form = TeamDataForm(instance=target_team)
-            member_count = target_members.count()
-            # print(member_count)
-            # print(target_members[0].player_num)
-            if member_count < 5:
-                error_message = '新增隊員成功,請輸入下一筆隊員資料'
-            else:
-                return redirect('show_team')
-        else:
-            print('!!!! error !!!')
-            error_message = mem2.errors
+    if request.POST.get('btn_target_name'):
+        modify_target = TeamMember.objects.get(id=request.POST.get('btn_target_name'),
+                                               team__team_name=target_team.team_name)
+        target_id = modify_target.id
+        mem1 = AddTeamMemberForm(instance=modify_target)
     else:
-        member_count = target_members.count()
-        if member_count < 5:
-            mem1 = AddTeamMemberForm()
-        else:
-            error_message = '隊員名額已滿'
+        if request.method == "POST":
+            save_target = TeamMember.objects.get(id=request.POST['target_id'],
+                                                 team__team_name=target_team.team_name)
+            mem2 = AddTeamMemberForm(request.POST, instance=save_target)
+            if mem2.is_valid():
+                # 回傳並顯示
+                t1 = mem2.save(commit=False)
+                t1.team = target_members[0].team
+                t1.player_num = target_members.count()
+                t1.save()
+                return redirect('show_team')
+            else:
+                print('!!!! modify_member error !!!')
+                error_message = mem2.errors
 
     return render(request, 'idea/add_member.html', locals())
 
 
+def del_member(request):
+    check_team = Team.objects.filter(leader=request.user)
+    target_team = Team.objects.get(leader=request.user)
+    target_mem = TeamMember.objects.get(team__team_name=target_team.team_name, id=request.POST.get('btn_target_name'))
+    if check_team and target_mem:
+        target_mem.delete()
+        return redirect('show_team')
+    else:
+        error_message = '隊伍刪除失敗'
+        error_link = 'show_team'
+        return render(request, 'idea/show_team.html', locals())
+
+
 def add_files(request):
+    check_team = Team.objects.filter(leader=request.user)
     target_team = Team.objects.get(leader=request.user)
     if request.method == "POST":
         form = TeamFilesForm(request.POST, request.FILES, instance=target_team)
@@ -193,7 +203,7 @@ def add_files(request):
                     files = None
             else:
                 files = None
-
+            return render(request, 'idea/file_list.html', {'files': files})
         else:
             print('!!!! add_files error !!!')
             if form.errors:

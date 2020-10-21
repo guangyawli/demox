@@ -1,5 +1,5 @@
 from django.urls import path, include
-from idea.views import index, file_list, show_team, add_team, add_member, modify_team, modify_member, add_files
+from idea.views import index, file_list, show_team, add_team, add_member, modify_team, modify_member, add_files, del_member
 
 
 urlpatterns = [
@@ -12,4 +12,5 @@ urlpatterns = [
     path('team_modify', modify_team, name='modify_team'),
     path('member_add', add_member, name='add_member'),
     path('member_modify', modify_member, name='modify_member'),
+    path('member_del', del_member, name='del_member'),
 ]

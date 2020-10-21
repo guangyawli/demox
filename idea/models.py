@@ -48,7 +48,7 @@ class TeamMember(models.Model):
     member_name = models.CharField(max_length=30)
     school_name = models.CharField(max_length=50)
     department_name = models.CharField(max_length=30)
-    department_grade = models.CharField(max_length=10)
+    department_grade = models.IntegerField(default=1)
     phone_number = models.CharField(max_length=20)
     email_addr = models.EmailField()
     player_num = models.IntegerField(default=1)

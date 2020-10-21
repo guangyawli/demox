@@ -1,13 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}我的作品{% endblock  %}
 {% block content-title %}我的作品{% endblock %}
-{% block error_content %}
-    <div class="container-fluid">
-        {% if error_message %}
-            <div>{{ error_message }}</div>
-        {% endif %}
-    </div>
-{% endblock %}
+
 {% block content %}
     <section class="bottom" id="table-section">
         <div class="container">

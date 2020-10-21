@@ -8,7 +8,6 @@
         {% if error_link %}
             <p>Please click <a href="{% url error_link %}">here</a>
         {% endif %}
-
     </div>
 {% endblock %}
 {% block content %}
@@ -82,46 +81,4 @@
     </section>
 {% endblock  %}
 {% block JScontent %}
-    <script>
-        $(function() {
-          let player_num = $('#player_num').val();
-          hide_player(player_num)
-        });
-        $('#player_num').change(function (){
-            let player_num = $('#player_num').val();
-            hide_player(player_num)
-        });
-        function hide_player(player_num){
-            if(player_num == 1){
-              $('#player1').hide();
-              $('#player2').hide();
-              $('#player3').hide();
-              $('#player4').hide();
-            }
-            else if (player_num == 2){
-              $('#player1').show();
-              $('#player2').hide();
-              $('#player3').hide();
-              $('#player4').hide();
-            }
-            else if (player_num == 3){
-              $('#player1').show();
-              $('#player2').show();
-              $('#player3').hide();
-              $('#player4').hide();
-            }
-            else if (player_num == 4){
-              $('#player1').show();
-              $('#player2').show();
-              $('#player3').show();
-              $('#player4').hide();
-            }
-            else if (player_num == 5){
-              $('#player1').show();
-              $('#player2').show();
-              $('#player3').show();
-              $('#player4').show();
-            }
-        }
-    </script>
-{% endblock %}
+   {% endblock %}

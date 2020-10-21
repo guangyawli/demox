@@ -12,7 +12,6 @@
     </div>
 {% endblock %}
 {% block content %}
-    {% if check_team %}
         <div><p>新增隊員<a href="{% url 'add_member' %}">here</a></div>
         <div><p>隊伍編輯<a href="{% url 'modify_team' %}">here</a></div>
     <section class="bottom" id="table-section">
@@ -22,81 +21,113 @@
             <div class="content-box table-responsive">
                   <div>
                       <h3 class="title">隊伍資料</h3>
-                      <div class="form-row">
-                        <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">隊伍名稱(不得提及校名或敏感字眼)</label>
-                          {{ form.team_name }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">作品主題(大致說明作品內容與主題)</label>
-                          {{ form.team_topic }}
-                        </div>
-                        <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">隊伍主要大學</label>
-                          {{ form.team_school }}
-                        </div>
-                        <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">隊伍人數(含隊長)</label>
-                            <div> {{ real_member_num }} </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">指導教授</label>
-                          {{ form.team_teacher }}
-                        </div>
-                      </div>
                       <hr>
-                  {% if target_members %}
-{#                          <label for="test">{{ member_count.numerator }}</label>#}
-                      {% for target_member in target_members %}
-{#                          <form method="post" enctype="multipart/form-data">#}
+                      <div class="row">
+                          <div class="col-md-10">
+                                <div class="form-row">
+                                    <div class="col-md-6 mb-3">
+                                      <span class="badge badge-info">名稱</span>
+                                      {{ form.team_name }}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                      <span class="badge badge-info">主題</span>
+                                      {{ form.team_topic }}
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                      <span class="badge badge-info">大學</span>
+                                      {{ form.team_school }}
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                      <span class="badge badge-info">人數(含隊長)</span>
+                                      {{ real_member_num }}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                      <span class="badge badge-info">教授</span>
+                                      {{ form.team_teacher }}
+                                    </div>
+                                </div>
+                          </div>
+                          <div class="col-md-2">
+                              <button type="button" onclick="javascript:location.href='{% url 'modify_team' %}'" class="btn btn-outline-info mb-1" style="width: 100%">
+                                  <i class="far fa-edit"></i>編輯
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+            </div>
+
+            <div class="content-box-no-bgc table-responsive">
+
+            </div>
+
+              {% if target_members %}
+                  {% for target_member in target_members %}
+                   <div class="content-box table-responsive" style="padding: 10px 20px 10px 20px">
+                        <div>
                           {% if forloop.first %}
                               <h3 class="title">隊長(主聯絡人)</h3>
                           {% else %}
                               <h3 class="title">隊員</h3>
                           {% endif %}
-                      <div class="form-row">
-                        <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">姓名</label>
-                          {{ target_member.member_name }}
-                        </div>
-                        <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">學校</label>
-                          {{ target_member.school_name }}
-                        </div>
-                        <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">系所</label>
-                          {{ target_member.department_name }}
-                        </div>
-                        <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">年級</label>
-                          {{ target_member.department_grade }}
-                        </div>
-                      </div>
-                      <div class="form-row">
-                         <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">電子信箱</label>
-                          {{ target_member.email_addr }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                          <label for="validationDefault03">行動電話</label>
-                          {{ target_member.phone_number }}
-                        </div>
-                      </div>
+                        <hr>
+                          <div class="row">
+                              <div class="col-md-10">
+                                 <div class="form-row">
+                                    <div class="col-md-3 mb-3">
+                                        <span class="badge badge-info">姓名</span>
+                                      {{ target_member.member_name }}
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                      <span class="badge badge-info">學校</span>
+                                      {{ target_member.school_name }}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                      <span class="badge badge-info">系所</span>
+                                      {{ target_member.department_name }} {{ target_member.department_grade }} 年級
+                                    </div>
+                                  </div>
+                                  <div class="form-row">
+                                     <div class="col-md-6 mb-3">
+                                      <span class="badge badge-info">信箱</span>
+                                      {{ target_member.email_addr }}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                      <span class="badge badge-info">電話</span>
+                                      {{ target_member.phone_number }}
+                                    </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-2">
+                                  {% if forloop.first %}
+                                      <button type="button" onclick="javascript:location.href='{% url 'modify_team' %}'" class="btn btn-outline-info mb-1" style="width: 100%">
+                                          <i class="far fa-edit"></i>編輯
+                                      </button>
+                                  {% else %}
+                                      <form class="navbar-right navbar-form" method="post" action="{% url 'modify_member' %}">
+                                          {% csrf_token %}
+                                          <input type="hidden" name="btn_target_name" value="{{ target_member.id }}">
+                                          <button class="btn btn-outline-info mb-1" style="width: 100%" type="submit"><i class="far fa-edit"></i>
+                                          編輯
+                                          </button>
+                                      </form>
+                                      <form class="navbar-right navbar-form" method="post" action="{% url 'del_member' %}">
+                                          {% csrf_token %}
+                                          <input type="hidden" name="btn_target_name" value="{{ target_member.id }}">
+                                          <button class="btn btn-outline-danger" style="width: 100%" type="submit"><i class="far fa-trash-alt"></i>
+                                          刪除
+                                          </button>
+                                      </form>
+                                  {% endif %}
+                              </div>
+                          </div>
 
-{#                          <button class="btn btn-primary" type="submit">功能鍵</button>#}
-{#                          </form>#}
-                      {% endfor %}
-                      <hr>
-                  {% endif %}
-
+                        </div>
+                   </div>
+                          {% endfor %}
+                      {% endif %}
                   </div>
-
             </div>
         </div>
     </section>
-    {% else %}
-    <p>No team yet. Please click <a href="{% url 'add_team' %}">here</a>
-        to add team.</p>
-    {% endif %}
 {% endblock  %}
 
