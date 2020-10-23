@@ -16,12 +16,17 @@ def file_list(request):
         target_team = Team.objects.get(leader=request.user)
         if target_team.readme or target_team.video_link or target_team.affidavit:
             files = target_team
+            if files.video_link != '':
+                video_id = files.video_link.split('?v=')[1]
+                video_embed_link = 'https://www.youtube.com/embed/' + video_id
+            else:
+                video_embed_link = ''
         else:
             return redirect('add_files')
     else:
         return redirect('add_team')
 
-    return render(request, 'idea/file_list.html', {'files': files})
+    return render(request, 'idea/file_list.html', {'files': files,'video_embed_link':video_embed_link})
 
 
 def show_team(request):
