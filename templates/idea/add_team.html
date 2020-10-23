@@ -13,67 +13,71 @@
 {% block content %}
     <section class="bottom" id="table-section">
         <div class="container">
-            <h2 class="title">新增隊伍</h2>
-            <p class="sub_title">新增隊伍資訊</p>
-            <div class="content-box table-responsive">
+            <h2 class="title">編輯隊伍</h2>
+            <p class="sub_title">編輯隊伍資訊</p>
+            <div class="content-box table-responsive" style="opacity:0" id="form">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                      <h3 class="title">隊伍資料</h3>
-                      <div class="form-row">
+                      <div class="form-row" id="form-team">
+                        <div class="col-12">
+                         <h3 class="title">隊伍資料</h3>
+                        </div>
                         <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">隊伍名稱(不得提及校名或敏感字眼)</label>
+                          <label>隊伍名稱(不得提及校名或敏感字眼)</label>
                           {{ form.team_name }}
                         </div>
                         <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">作品主題(大致說明作品內容與主題)</label>
+                          <label>作品主題(大致說明作品內容與主題)</label>
                           {{ form.team_topic }}
                         </div>
                         <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">隊伍主要大學</label>
+                          <label>隊伍主要大學</label>
                           {{ form.team_school }}
                         </div>
                         <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">隊伍人數(含隊長)</label>
+                          <label>隊伍人數(含隊長)</label>
                           {{ mem1.player_num }}
                         </div>
                         <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">指導教授</label>
+                          <label>指導教授</label>
                           {{ form.team_teacher }}
                         </div>
+                        <hr>
                       </div>
-                      <hr>
-                      <h3 class="title">隊長(主聯絡人)</h3>
-                      <div class="form-row">
+
+                      <div class="form-row" id="form-player">
+                        <div class="col-12">
+                         <h3 class="title">隊長(主聯絡人)</h3>
+                        </div>
                         <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">姓名</label>
+                          <label>姓名</label>
                           {{ mem1.member_name }}
                         </div>
                         <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">學校</label>
+                          <label>學校</label>
                           {{ mem1.school_name }}
                         </div>
                         <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">系所</label>
+                          <label>系所</label>
                           {{ mem1.department_name }}
                         </div>
                         <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">年級</label>
+                          <label>年級</label>
                           {{ mem1.department_grade }}
                         </div>
-                      </div>
-                      <div class="form-row">
                          <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">電子信箱</label>
+                          <label>電子信箱</label>
                           {{ mem1.email_addr }}
                         </div>
                         <div class="col-md-6 mb-3">
-                          <label for="validationDefault03">行動電話</label>
+                          <label>行動電話</label>
                           {{ mem1.phone_number }}
                         </div>
+                         <hr>
                       </div>
-                      <hr>
+
                       <button class="btn btn-primary" type="submit">送出</button>
-                      {# 隱藏欄位 #}
+
                     <div>{{ form.leader }}</div>
                 </form>
             </div>
@@ -81,4 +85,43 @@
     </section>
 {% endblock  %}
 {% block JScontent %}
-   {% endblock %}
+    <script>
+       function getCookie(cname) {
+          var name = cname + "=";
+          var decodedCookie = decodeURIComponent(document.cookie);
+          var ca = decodedCookie.split(';');
+          for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+              c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+              return c.substring(name.length, c.length);
+            }
+          }
+          return "";
+        }
+
+       function checkCookie() {
+          var mode = getCookie ('modify-mode');
+          if (mode == 'team') {
+              $('#form-player').hide();
+          }
+          else if(mode == 'player' ) {
+              $('#form-team').hide();
+          }
+          else{
+          }
+        }
+
+        //確認本次修改項目
+        window.onload = function() {
+          checkCookie();
+        };
+
+        window.addEventListener('load', function () {
+          $('#form').css("opacity","1");
+        })
+
+    </script>
+{% endblock %}

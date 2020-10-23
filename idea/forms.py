@@ -18,24 +18,6 @@ class TeamDataForm(forms.ModelForm):
             'affidavit': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
-    def clean_readme(self):
-        if self.cleaned_data['readme']:
-            file = self.cleaned_data['readme']
-            ext = file.name.split('.')[-1].lower()
-            if ext not in ["pdf"]:
-                raise forms.ValidationError("Only pdf files are allowed.")
-            # return cleaned data is very important.
-            return file
-
-    def clean_affidavit(self):
-        if self.cleaned_data['affidavit']:
-            file = self.cleaned_data['affidavit']
-            ext = file.name.split('.')[-1].lower()
-            if ext not in ["pdf"]:
-                raise forms.ValidationError("Only pdf files are allowed.")
-            # return cleaned data is very important.
-            return file
-
 
 class TeamMemberForm(forms.ModelForm):
     class Meta:
@@ -76,29 +58,11 @@ class AddTeamMemberForm(forms.ModelForm):
 class TeamFilesForm(forms.ModelForm):
     class Meta:
         model = Team
-        exclude = ['team_topic', 'team_school', 'team_teacher', 'leader']
+        exclude = ['team_name', 'team_school', 'team_teacher', 'leader']
         widgets = {
-            'team_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'video_link': forms.URLInput(attrs={'class': 'form-control', 'required': 'required'}),
-            'readme': forms.ClearableFileInput(attrs={'class': 'form-control', 'required': 'required'}),
-            'affidavit': forms.ClearableFileInput(attrs={'class': 'form-control', 'required': 'required'}),
+            'team_topic': forms.TextInput(attrs={'class': 'form-control'}),
+            'video_link': forms.URLInput(attrs={'class': 'form-control'}),
+            'readme': forms.ClearableFileInput(attrs={'class': 'form-control', 'multiple': True}),
+            'affidavit': forms.ClearableFileInput(attrs={'class': 'form-control', 'multiple': True}),
         }
-
-    def clean_readme(self):
-        if self.cleaned_data['readme']:
-            file = self.cleaned_data['readme']
-            ext = file.name.split('.')[-1].lower()
-            if ext not in ["pdf"]:
-                raise forms.ValidationError("Only pdf files are allowed.")
-            # return cleaned data is very important.
-            return file
-
-    def clean_affidavit(self):
-        if self.cleaned_data['affidavit']:
-            file = self.cleaned_data['affidavit']
-            ext = file.name.split('.')[-1].lower()
-            if ext not in ["pdf"]:
-                raise forms.ValidationError("Only pdf files are allowed.")
-            # return cleaned data is very important.
-            return file
 

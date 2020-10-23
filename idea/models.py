@@ -2,6 +2,7 @@ from datetime import datetime
 import os
 import uuid
 
+from django.core import validators
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -36,8 +37,10 @@ class Team(models.Model):
     leader = models.OneToOneField(User, on_delete=models.CASCADE)
     video_link = models.URLField(blank=True)
     code_link = models.URLField(blank=True)
-    readme = models.FileField(upload_to=user_readme_path, blank=True)
-    affidavit = models.FileField(upload_to=user_affidavit_path, blank=True)
+    readme = models.FileField(upload_to=user_readme_path, blank=True,
+                              validators=[validators.FileExtensionValidator(['pdf'], message='必須為pdf格式')])
+    affidavit = models.FileField(upload_to=user_affidavit_path, blank=True,
+                                 validators=[validators.FileExtensionValidator(['pdf'], message='必須為pdf格式')])
 
     def __str__(self):
         return self.team_name

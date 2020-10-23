@@ -14,12 +14,12 @@ def file_list(request):
     check_team = Team.objects.filter(leader=request.user).exists()
     if check_team:
         target_team = Team.objects.get(leader=request.user)
-        if target_team.readme and target_team.video_link and target_team.affidavit:
+        if target_team.readme or target_team.video_link or target_team.affidavit:
             files = target_team
         else:
             return redirect('add_files')
     else:
-        return redirect('add_files')
+        return redirect('add_team')
 
     return render(request, 'idea/file_list.html', {'files': files})
 
@@ -63,11 +63,12 @@ def add_team(request):
             target_team = Team.objects.get(leader=request.user)
             target_members = TeamMember.objects.filter(team__team_name=target_team.team_name)
             error_message = '隊伍新增成功'
-            form = TeamDataForm(instance=target_team)
-            real_member_num = target_members.count()
-            return render(request, 'idea/show_team.html', locals())
+            return redirect('show_team')
+            # form = TeamDataForm(instance=target_team)
+            # real_member_num = target_members.count()
+            # return render(request, 'idea/show_team.html', locals())
         else:
-            print('!!!! error !!!')
+            print('!!!! error add_team !!!')
             error_message = mem1.errors
     else:
         form = TeamDataForm(initial={'leader': request.user})
@@ -93,10 +94,11 @@ def modify_team(request):
             t1.save()
             # 回傳並顯示
             error_message = '隊伍儲存成功'
-            form = TeamDataForm(instance=target_team)
-            target_members = TeamMember.objects.filter(team__team_name=target_team.team_name)
-            real_member_num = target_members.count()
-            return render(request, 'idea/show_team.html', locals())
+            return redirect('show_team')
+            # form = TeamDataForm(instance=target_team)
+            # target_members = TeamMember.objects.filter(team__team_name=target_team.team_name)
+            # real_member_num = target_members.count()
+            # return render(request, 'idea/show_team.html', locals())
         else:
             print('!!!! modify_team error !!!')
             if mem1.errors:
@@ -187,28 +189,33 @@ def del_member(request):
 
 def add_files(request):
     check_team = Team.objects.filter(leader=request.user)
-    target_team = Team.objects.get(leader=request.user)
-    if request.method == "POST":
-        form = TeamFilesForm(request.POST, request.FILES, instance=target_team)
-        if form.is_valid():
-            form.save()
-            # 回傳並顯示
-            error_message = '檔案儲存成功'
-            check_team = Team.objects.filter(leader=request.user).exists()
-            if check_team:
-                target_team = Team.objects.get(leader=request.user)
-                if target_team.readme and target_team.video_link and target_team.affidavit:
-                    files = target_team
-                else:
-                    files = None
-            else:
-                files = None
-            return render(request, 'idea/file_list.html', {'files': files})
-        else:
-            print('!!!! add_files error !!!')
-            if form.errors:
-                error_message = form.errors
+    if not check_team.exists():
+        return redirect('add_team')
     else:
-        form = TeamFilesForm(instance=target_team)
+        target_team = check_team.get()
+        if request.method == "POST":
+            post_form = TeamFilesForm(request.POST, request.FILES, instance=target_team)
+            if post_form.is_valid():
+                post_form.save()
+                return redirect('file_list')
+                # 回傳並顯示
+                # error_message = '檔案儲存成功'
+                # check_team = Team.objects.filter(leader=request.user).exists()
+                # if check_team:
+                #     target_team = Team.objects.get(leader=request.user)
+                #     if target_team.readme or target_team.video_link or target_team.affidavit:
+                #         files = target_team
+                #     else:
+                #         files = None
+                # else:
+                #     files = None
+                # return render(request, 'idea/file_list.html', {'files': files})
+            else:
+                print('!!!! add_files error !!!')
+                if post_form.errors:
+                    error_message = post_form.errors
+        else:
+            post_form = TeamFilesForm(instance=target_team, initial={})
 
-    return render(request, 'idea/file_list.html', locals())
+        return render(request, 'idea/file_list.html', locals())
+

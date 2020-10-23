@@ -47,7 +47,9 @@
                   </div>
 
                   <div class="tab-pane fade" id="youtube" role="tabpanel" aria-labelledby="youtube-tab">
-                      <a href="{{ files.video_link }}">{{ files.video_link }}</a>
+                      {% if files.video_link %}
+                          <a href="{{ files.video_link }}">{{ files.video_link }}</a>
+                      {% endif %}
                       <div class="youtube_container">
 
                           <iframe src="https://www.youtube.com/embed/cDSyHVPo3ZA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="video"></iframe>
@@ -55,8 +57,11 @@
                   </div>
 
                   <div class="tab-pane fade" id="affidavit" role="tabpanel" aria-labelledby="affidavit-tab">
-                      <a href="{{ files.affidavit.url }}">{{ files.affidavit.url }}</a>
-
+                      {% if files.affidavit %}
+                          <a href="{{ files.affidavit.url }}">競賽切結書.pdf</a>
+                      {% else %}
+                          <p class="sub_title">未上傳檔案</p>
+                      {% endif %}
                   </div>
                 </div>
             </div>
@@ -73,20 +78,20 @@
                       <h3 class="title">隊伍資料</h3>
                       <div class="form-row">
                         <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">隊伍名稱(不得提及校名或敏感字眼)</label>
-                          {{ form.team_name }}
+                          <label for="validationDefault02">隊伍主題</label>
+                          {{ post_form.team_topic }}
                         </div>
                         <div class="col-md-6 mb-3">
                           <label for="validationDefault02">作品說明書</label>
-                          {{ form.readme }}
+                          {{ post_form.readme }}
                         </div>
                         <div class="col-md-3 mb-3">
                           <label for="validationDefault02">切結書</label>
-                          {{ form.affidavit }}
+                          {{ post_form.affidavit }}
                         </div>
                         <div class="col-md-3 mb-3">
                           <label for="validationDefault02">影片連結</label>
-                          {{ form.video_link }}
+                          {{ post_form.video_link }}
                         </div>
                       </div>
                       <hr>
@@ -219,7 +224,7 @@
             $('#current_page').text(current_page)
         }, function (reason) {
             // PDF loading error
-            console.error(reason);
+            console.log(reason);
         });
     }
     </script>
