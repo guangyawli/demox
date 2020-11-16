@@ -32,25 +32,30 @@
                     <div class="col-12 col-md-3">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                           <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
-                              <h5><span class="badge badge-secondary">作品說明書</span></h5>
+                              <h5><span class="badge badge-secondary">作品說明書/競賽切結書</span></h5>
                           </a>
                           <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
                               <h5><span class="badge badge-secondary">作品影片</span></h5>
-                          </a>
-                          <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
-                              <h5><span class="badge badge-secondary">競賽切結書</span></h5>
                           </a>
                         </div>
                     </div>
                     <div class="col-12 col-md-9">
                         <div class="tab-content" id="v-pills-tabContent">
                           <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                              {% if files.readme  %}
                               <div class="page_title fw9" id="pdf-box">
-                                <i id="previous_button" onclick="previousPage()" class="fas fa-arrow-alt-circle-left pni cursor-pointer"></i>
-                                <span id="current_page"></span>/<span id="total_page"></span>
-                                <i id="next_button" onclick="nextPage()" class="fas fa-arrow-alt-circle-right pni cursor-pointer"></i>
-                                <canvas id="the-canvas"></canvas>
+                                    <canvas id="pdf1_canvas"></canvas>
                               </div>
+                              {% else %}
+                                  <p class="sub_title">未上傳</p>
+                              {% endif %}
+                              {% if files.affidavit %}
+                                    <div class="page_title fw9" id="pdf-box">
+                                        <canvas id="pdf2_canvas"></canvas>
+                                    </div>
+                                {% else %}
+                                  <p class="sub_title">未上傳</p>
+                              {% endif %}
                           </div>
                           <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                               {% if files.video_link %}
@@ -61,12 +66,6 @@
                                   <p class="sub_title">未上傳影片</p>
                               {% endif %}
                           </div>
-                          <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-                                <div class="page_title fw9" id="pdf-box2">
-                                     <canvas id="the-canvas"></canvas>
-                                </div>
-                          </div>
-                          <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
                         </div>
                     </div>
                 </div>
@@ -125,18 +124,44 @@
     <script src="{% static "js/pdfjs/pdf.js" %}"></script>
     <script src="{% static "js/pdfjs/pdf.worker.js" %}"></script>
     <script>
+
     {#-------------開始時載入pdf-------------#}
-    let current_page=1;
-    let total_page='';
-    {% if files.readme %}
-        var url = "{{ files.readme.url }}";
-        var url2 = "{{ files.affidavit.url }}";
+    let pdf_current_page = {
+        "pdf1": "1",
+        "pdf2": "1",
+    };
+
+    let pdf_total_page  = {
+        "pdf1": "",
+        "pdf2": "",
+    };
+    {% if files.readme and files.affidavit %}
+        var pdf1_url = "{{ files.readme.url }}";
+        var pdf2_url = "{{ files.affidavit.url }}";
+    {% elif files.readme %}
+        var pdf1_url = "{{ files.readme.url }}";
+    {% elif files.affidavit %}
+        var pdf2_url = "{{ files.affidavit.url }}";
     {% else %}
-        var url = "";
+
     {% endif %}
-    window.onload = function() {
-        pdfBox('pdf-box',url,current_page);
-        {#pdfBox('pdf-box2',url2,1);#}
+
+    window.onload = function(){
+        {% if files.readme and files.affidavit %}
+            pdfHTML('pdf1');
+            pdfBox('pdf1',1);
+            pdfHTML('pdf2');
+            pdfBox('pdf2',1);
+        {% elif files.readme %}
+            pdfHTML('pdf1');
+            pdfBox('pdf1',1);
+        {% elif files.affidavit %}
+            pdfHTML('pdf2');
+            pdfBox('pdf2',1);
+        {% else %}
+
+        {% endif %}
+
     };
 
 
@@ -157,45 +182,76 @@
             setTimeout(resizeend, delta);
         } else {
             timeout = false;
-            pdfBox('pdf-box',url,current_page);
+            pdfBox('pdf1',parseInt(pdf_current_page['pdf1']));
+            pdfBox('pdf2',parseInt(pdf_current_page['pdf2']));
         }
     }
     {#-------------pdf主程式-------------#}
-    {#function pdfURL() {#}
-    {#    window.open(url);#}
-    {# } #}
-    function previousPage() {
-        if (current_page !== 1) {
-            current_page -= 1;
-            pdfBox('pdf-box',url,current_page);
+    //上下頁按鈕功能
+    function previousPage(id) {
+        if (parseInt(pdf_current_page[id])>1 ) {
+            pdf_current_page[id] = parseInt(pdf_current_page[id]) - 1;
+            pdfBox(id,parseInt(pdf_current_page[id]));
         }
     }
-    function nextPage() {
-        if (current_page !== total_page) {
-            current_page += 1;
-            pdfBox('pdf-box',url,current_page);
+    //上下頁按鈕功能
+    function nextPage(id) {
+        if (parseInt(pdf_current_page[id]) !== parseInt(pdf_total_page[id])) {
+            pdf_current_page[id] = parseInt(pdf_current_page[id]) + 1;
+            pdfBox(id,parseInt(pdf_current_page[id]));
         }
     }
-    function pdfBox(id,url,page) {
-        var loadingTask = pdfjsLib.getDocument(url);
+
+    //上下頁按鈕渲染
+    function pdfHTML(id){
+        let previous_button = "<i onclick=\"previousPage('"+id+"')\" class=\"fas fa-arrow-alt-circle-left pni cursor-pointer previous_button\"></i>";
+        let page ="<span class=\""+id+"_current_page\"></span>/<span class=\""+ id +"_total_page\"></span>";
+        let next_button = "<i onclick=\"nextPage('"+id+"')\" class=\"fas fa-arrow-alt-circle-right pni cursor-pointer next_button\" ></i>";
+        $('#'+ id + '_canvas').parent().prepend(previous_button,page,next_button);
+    }
+
+    //上下頁按鈕顏色渲染
+    function pdfHTML_button(id){
+        if(pdf_current_page[id] == 1 ){
+            if(pdf_total_page[id] == 1 ){
+                $('.previous_button').css({'color':'#4d4d4d','cursor':'default'});
+                $('.next_button').css({'color':'#4d4d4d','cursor':'default'});
+                console.log('0 00 ')
+            }
+            else {
+                $('.previous_button').css({'color':'#4d4d4d','cursor':'default'});
+                $('.next_button').css({'color':'#FF6722','cursor':'pointer'});
+            }
+        }
+        else if(pdf_current_page[id] === pdf_total_page[id]){
+            $('.previous_button').css({'color':'#FF6722','cursor':'pointer'});
+            $('.next_button').css({'color':'#4d4d4d','cursor':'default'});
+        }
+        else {
+            $('.previous_button').css({'color':'#FF6722','cursor':'pointer'});
+            $('.next_button').css({'color':'#FF6722','cursor':'pointer'});
+        }
+    }
+
+    //pdfBox主程式
+    function pdfBox(id,page) {
+        var pdfCanvas = id +'_canvas';
+        var pdfURL = id +'_url';
+        var loadingTask = pdfjsLib.getDocument(eval(pdfURL));
         loadingTask.promise.then(function (pdf) {
             var pageNumber = page;
-            $('#total_page').text(pdf.numPages);
-            total_page = pdf.numPages;
+            pdf_total_page[id] = pdf.numPages;
+            $('.'+ id +'_total_page').text(pdf_total_page[id]);
             pdf.getPage(pageNumber).then(function (page) {
                 // Prepare canvas using PDF page dimensions
-                var container = document.getElementById(id);
-                var canvas = document.getElementById('the-canvas');
+                var container = document.getElementById('pdf-box');
+                var canvas = document.getElementById(pdfCanvas);
                 var context = canvas.getContext('2d');
-
                 var viewport = page.getViewport(1);
                 var scale = container.clientWidth / viewport.width;
                 viewport = page.getViewport(scale);
-
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
-
-                // Render PDF page into canvas context
                 var renderContext = {
                     canvasContext: context,
                     viewport: viewport
@@ -204,25 +260,12 @@
                 renderTask.promise.then(function () {
                 });
             });
-            if (pdf.numPages > 1) {
-                if (current_page === 1) {
-                    $('#previous_button').css({'color':'#4d4d4d','cursor':'default'});
-                } else {
-                    $('#previous_button').css({'color':'#FF6722','cursor':'pointer'});
-                }
-
-                if (current_page === pdf.numPages) {
-                    $('#next_button').css({'color':'#4d4d4d','cursor':'default'});
-                } else {
-                    $('#next_button').css({'color':'#FF6722','cursor':'pointer'});
-                }
-            }
-            $('#current_page').text(current_page)
+            $('.'+ id +'_current_page').text(pdf_current_page[id]);
+            pdfHTML_button(id);
             }, function (reason) {
-                // PDF loading error
-                console.log(reason);
             });
         }
+
     </script>
 {% endblock %}
 

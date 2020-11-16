@@ -3,34 +3,51 @@
 {% block title %}
     Home
 {% endblock  %}
-
+{% block STYLEcontent %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        .owl-item{
+            width: 1100px !important;
+        }
+    </style>
+{% endblock %}
 {% block content %}
     <section>
         <div class="container">
-            <img src="https://via.placeholder.com/400X200?text=ProjectX+ShareX"  width="100%"  class="img-fluid" alt="Responsive image">
-        </div>
-    </section>
-
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h2>Share <span style="position: absolute;line-height: 0.2">+</span></h2>
-                    <table>
-                        <tr>
-                            <td>sdsd </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="col-md-4">
-                    <h2>Project <span style="position: absolute;line-height: 0.2">+</span></h2>
-                </div>
-                <div class="col-md-4">
-                    <h2>我的題</h2>
-                </div>
+             <div class="owl-carousel owl-theme owl-loaded">
+              <div class="item"width="100%"> <img src="https://via.placeholder.com/400X200?text=ProjectX+ShareX"  width="100%" class="img-fluid" alt="Responsive image">  </div>
+              <div class="item"width="100%"> <img src="https://via.placeholder.com/400X200?text=ProjectX+ShareX"  width="100%"  class="img-fluid" alt="Responsive image"> </div>
+              <div class="item"width="100%"> <img src="https://via.placeholder.com/400X200?text=ProjectX+ShareX"  width="100%"  class="img-fluid" alt="Responsive image"> </div>
+              <div class="item"width="100%"> <img src="https://via.placeholder.com/400X200?text=ProjectX+ShareX"  width="100%"  class="img-fluid" alt="Responsive image"> </div>
+              <div class="item"width="100%"> <img src="https://via.placeholder.com/400X200?text=ProjectX+ShareX"  width="100%"  class="img-fluid" alt="Responsive image"> </div>
+              <div class="item"width="100%"> <img src="https://via.placeholder.com/400X200?text=ProjectX+ShareX"  width="100%"  class="img-fluid" alt="Responsive image"> </div>
             </div>
         </div>
     </section>
 
 
+
+{% endblock  %}
+
+
+{% block JScontent %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" ></script>
+    <script>
+        $(document).ready(function(){
+          $(".owl-carousel").owlCarousel({
+            animateOut: 'slideOutDown',
+            animateIn: 'flipInX',
+            loop:true,
+            margin:10,
+            autoWidth:true,   /* 可自行設定輪播寬度 */
+            lazyLoad:true,
+            items:1,  /* 一頁出現的張數 */
+            autoplay:false,  /* 自動輪播 */
+            autoplayTimeout:3000,  /* 輪播速度 */
+            autoplayHoverPause:true,
+            });
+        });
+    </script>
 {% endblock  %}
