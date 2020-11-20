@@ -33,15 +33,15 @@ class MailServer(models.Model):
 class OauthProvider(models.Model):
     provider_name = models.CharField(max_length=30, verbose_name='Provider名稱', default='openedu')
     provider_host = models.CharField(max_length=40, verbose_name='host網址', default='https://courses-api.openedu.tw')
-    client_id = models.CharField(max_length=60, verbose_name='Client ID')
-    client_secret = models.CharField(max_length=60, verbose_name='Client Secret')
+    client_id = models.CharField(max_length=80, verbose_name='Client ID')
+    client_secret = models.CharField(max_length=150, verbose_name='Client Secret')
     requestapi = models.CharField(max_length=70, verbose_name='api網址',
                                   default='https://courses-api.openedu.tw/oauth2/user_info')
-    authorization_base_url = models.CharField(max_length=70, verbose_name='api網址',
+    authorization_base_url = models.CharField(max_length=70, verbose_name='auth網址',
                                               default='https://courses-api.openedu.tw/oauth2/authorize')
     token_url = models.CharField(max_length=70, verbose_name='token網址',
                                  default='https://courses-api.openedu.tw/oauth2/access_token')
-    redirect_uri = models.CharField(max_length=70, verbose_name='token網址',
+    redirect_uri = models.CharField(max_length=70, verbose_name='return網址',
                                     default='http://demox.twshop.asia/accounts/rlogin')
 
     def __str__(self):

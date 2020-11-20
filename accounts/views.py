@@ -1,8 +1,9 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib import auth
 from django.shortcuts import render, redirect
 from .forms import RegisterForm, LoginForm, ResetRequestForm, ResetPwdForm, ResendConfirmForm
-from .models import UserProfile
+from .models import UserProfile, OauthProvider
 from django.contrib import messages
 # import logging
 import uuid
@@ -14,7 +15,7 @@ from accounts.models import MailServer, Emails
 from django.template import loader
 
 # OAuth
-from django.http import HttpResponseRedirect,HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse
 from requests_oauthlib import OAuth2Session
 
 
@@ -27,7 +28,10 @@ def my_profile(request):
 
 
 def sign_in(request):
-    oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=['email', 'profile', 'openid'])
+    client_id = OauthProvider.objects.get(provider_name='openedu').client_id
+    redirect_uri = OauthProvider.objects.get(provider_name='openedu').redirect_uri
+    authorization_base_url = OauthProvider.objects.get(provider_name='openedu').authorization_base_url
+    oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=['email', 'profile', 'user_id'])
     authorization_url, state = oauth.authorization_url(authorization_base_url)
     #  print(authorization_url)
     # request.session['state']=state
@@ -36,25 +40,36 @@ def sign_in(request):
 
 # @method_decorator(csrf_exempt)
 def UserLoginAPI2(request):
-    redirect_response = 'https://oj.openedu.tw'+request.get_full_path()
-    oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=['email', 'profile', 'openid'])
+    redirect_uri = OauthProvider.objects.get(provider_name='openedu').redirect_uri
+    provider_host = OauthProvider.objects.get(provider_name='openedu').provider_host
+    client_id = OauthProvider.objects.get(provider_name='openedu').client_id
+    client_secret = OauthProvider.objects.get(provider_name='openedu').client_secret
+    token_url = OauthProvider.objects.get(provider_name='openedu').token_url
+    requestapi = OauthProvider.objects.get(provider_name='openedu').requestapi
+
+    redirect_response = provider_host+request.get_full_path()
+    oauth = OAuth2Session(client_id, redirect_uri=redirect_uri, scope=['email', 'profile', 'user_id'])
     request.session['token'] = oauth.fetch_token(token_url, authorization_response=redirect_response,
                                                  client_secret=client_secret)
     # token2 = oauth.access_token
     # return HttpResponse(token2)
     r = oauth.get(requestapi)
-    if User.objects.filter(username=eval(r.text)["preferred_username"]).exists():
-        user = auth.authenticate(username=eval(r.text)['preferred_username'], password=eval(r.text)['user_tracking_id'])
+
+    if User.objects.filter(username=eval(r.text)["username"]).exists():
+        user = auth.authenticate(username=eval(r.text)['username'], password=eval(r.text)['id'])
         if user:
             auth.login(request, user)
-        return HttpResponseRedirect('https://oj.openedu.tw')
-    else:
-        user = User.objects.create(username=eval(r.text)['preferred_username'], email=eval(r.text)["email"])
-        user.set_password(eval(r.text)["user_tracking_id"])
+        return HttpResponseRedirect(provider_host)
+    elif r.status_code == 200:
+        user = User.objects.create(username=eval(r.text)['username'], email=eval(r.text)["email"])
+        user.set_password(eval(r.text)["id"])
         user.save()
         UserProfile.objects.create(user=user)
         auth.login(request, user)
-        return HttpResponseRedirect('https://oj.openedu.tw')
+        return HttpResponseRedirect(provider_host)
+    else:
+        messages.add_message(request, messages.ERROR, '帳號不存在，請重新登入')
+        return redirect('home')
 
 
 # def sign_up(request):
@@ -179,8 +194,8 @@ def activate_user(request, active_key, token):
     try:
         user = User.objects.get(username=active_key, userprofile__check_code=token)
     except User.DoesNotExist:
-        messages.add_message(request, messages.ERROR, '該帳號不存在，請重新註冊')
-        return redirect('Register')
+        messages.add_message(request, messages.ERROR, '該帳號不存在，請重新登入')
+        return redirect('Login')
     if user.is_active:
         messages.add_message(request, messages.SUCCESS, '帳號已啟用')
         return redirect('Login')
