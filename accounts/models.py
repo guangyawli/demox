@@ -3,14 +3,6 @@ from django.db import models
 from ckeditor.fields import RichTextField
 
 
-class UserProfile(models.Model):
-    check_code = models.CharField(max_length=10, blank=True, verbose_name='檢查碼')
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='帳號名稱')
-
-    def __str__(self):
-        return self.user.username
-
-
 class Emails(models.Model):
     e_from = models.CharField(max_length=50, blank=False, verbose_name='寄件者', default='推動大學程式設計教學 <admin@coding101.tw>')
     e_title = models.CharField(max_length=100, blank=False, verbose_name='信件標題', default='default_title')
@@ -46,3 +38,15 @@ class OauthProvider(models.Model):
 
     def __str__(self):
         return self.provider_name
+
+
+class UserProfile(models.Model):
+    check_code = models.CharField(max_length=10, blank=True, verbose_name='檢查碼')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='帳號名稱')
+    real_name = models.CharField(max_length=30, blank=True, verbose_name='真實姓名')
+    school = models.CharField(max_length=60, blank=True, verbose_name='學校')
+    department = models.CharField(max_length=90, blank=True, verbose_name='系所')
+    role_flag = models.CharField(max_length=20, blank=True, verbose_name='身份', default='設計者')
+
+    def __str__(self):
+        return self.user.username

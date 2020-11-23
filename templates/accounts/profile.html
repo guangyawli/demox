@@ -8,234 +8,31 @@
             <div class="content-box table-responsive">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {# 暫存#}
-                    {{ form.readme }}
-                    {{ form.affidavit }}
-                    {{ form.video_link }}
-                    {# 暫存--end  #}
-                      <h3 class="title">隊伍資料</h3>
+                      <h3 class="title">我的資料</h3>
                       <div class="form-row">
                         <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">隊伍名稱(不得提及校名或敏感字眼)</label>
-                          {{ form.team_name }}
+                          <label for="validationDefault02">真實姓名</label>
+                          {{ target_form.real_name }}
                         </div>
                         <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">隊伍主要大學</label>
-                          {{ form.team_school }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">隊伍人數(含隊長)</label>
-                          {{ mem1.player_num }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">指導教授</label>
-                          {{ form.team_teacher }}
-                        </div>
-                      </div>
-                      <hr>
-                      <h3 class="title">隊長(主聯絡人)</h3>
-                      <div class="form-row">
-                        <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">姓名</label>
-                          {{ mem1.member_name1 }}
-                        </div>
-                        <div class="col-md-3 mb-3">
                           <label for="validationDefault02">學校</label>
-                          {{ mem1.school_name1 }}
-                        </div>
-                        <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">系所</label>
-                          {{ mem1.department_name1 }}
-                        </div>
-                        <div class="col-md-3 mb-3">
-                          <label for="validationDefault02">年級</label>
-                          {{ mem1.department_grade1 }}
-                        </div>
-                      </div>
-                      <div class="form-row">
-                         <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">電子信箱</label>
-                          {{ mem1.email_addr1 }}
+                          {{ target_form.school }}
                         </div>
                         <div class="col-md-6 mb-3">
-                          <label for="validationDefault03">行動電話</label>
-                          {{ mem1.phone_number1 }}
+                          <label for="validationDefault02">系所</label>
+                          {{ target_form.department }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">權限</label><br>
+                          {{ role_status }}
                         </div>
                       </div>
                       <hr>
-                      <div class="" id="player1">
-                          <h3 class="title">隊員1(副聯絡人)</h3>
-                          <div class="form-row">
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">姓名</label>
-                              {{ mem1.member_name2 }}
-                            </div>
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">學校</label>
-                              {{ mem1.school_name2 }}
-                            </div>
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">系所</label>
-                              {{ mem1.department_name2 }}
-                            </div>
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">年級</label>
-                              {{ mem1.department_grade2 }}
-                            </div>
-                          </div>
-                          <div class="form-row">
-                             <div class="col-md-6 mb-3">
-                              <label for="validationDefault02">電子信箱</label>
-                              {{ mem1.email_addr2 }}
-                            </div>
-                            <div class="col-md-6 mb-3">
-                              <label for="validationDefault03">行動電話</label>
-                              {{ mem1.phone_number2 }}
-                            </div>
-                          </div>
-                      </div>
-                      <div class="" id="player2">
-                          <h3 class="title">隊員2</h3>
-                          <div class="form-row">
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">姓名</label>
-                                {{ mem1.member_name3 }}
-                            </div>
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">學校</label>
-                              {{ mem1.school_name3 }}
-                            </div>
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">系所</label>
-                                {{ mem1.department_name3 }}
-                            </div>
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">年級</label>
-                              {{ mem1.department_grade3 }}
-                            </div>
-                          </div>
-                          <div class="form-row">
-                             <div class="col-md-6 mb-3">
-                              <label for="validationDefault02">電子信箱</label>
-                              {{ mem1.email_addr3 }}
-                            </div>
-                            <div class="col-md-6 mb-3">
-                              <label for="validationDefault03">行動電話</label>
-                              {{ mem1.phone_number3 }}
-                            </div>
-                          </div>
-                      </div>
-                      <div class="" id="player3">
-                          <h3 class="title">隊員3</h3>
-                          <div class="form-row">
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">姓名</label>
-                              {{ mem1.member_name4 }}
-                            </div>
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">學校</label>
-                              {{ mem1.school_name4 }}
-                            </div>
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">系所</label>
-                                {{ mem1.department_name4 }}
-                            </div>
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">年級</label>
-                              {{ mem1.department_grade4 }}
-                            </div>
-                          </div>
-                          <div class="form-row">
-                             <div class="col-md-6 mb-3">
-                              <label for="validationDefault02">電子信箱</label>
-                              {{ mem1.email_addr4 }}
-                            </div>
-                            <div class="col-md-6 mb-3">
-                              <label for="validationDefault03">行動電話</label>
-                              {{ mem1.phone_number4 }}
-                            </div>
-                          </div>
-                      </div>
-                      <div class="" id="player4">
-                          <h3 class="title">隊員4</h3>
-                          <div class="form-row">
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">姓名</label>
-                              {{ mem1.member_name5 }}
-                            </div>
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">學校</label>
-                              {{ mem1.school_name5 }}
-                            </div>
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">系所</label>
-                                {{ mem1.department_name5 }}
-                            </div>
-                            <div class="col-md-3 mb-3">
-                              <label for="validationDefault02">年級</label>
-                              {{ mem1.department_grade5 }}
-                            </div>
-                          </div>
-                          <div class="form-row">
-                             <div class="col-md-6 mb-3">
-                              <label for="validationDefault02">電子信箱</label>
-                                 {{ mem1.email_addr5 }}
-                            </div>
-                            <div class="col-md-6 mb-3">
-                              <label for="validationDefault03">行動電話</label>
-                                {{ mem1.phone_number5 }}
-                            </div>
-                          </div>
-                      </div>
                       <button class="btn btn-primary" type="submit">送出</button>
-                      {# 隱藏欄位 #}
-                    <div>{{ form.leader }}</div>
                 </form>
             </div>
         </div>
     </section>
 {% endblock  %}
 {% block JScontent %}
-    <script>
-        $(function() {
-          let player_num = $('#player_num').val();
-          hide_player(player_num)
-        });
-        $('#player_num').change(function (){
-            let player_num = $('#player_num').val();
-            hide_player(player_num)
-        });
-        function hide_player(player_num){
-            if(player_num == 1){
-              $('#player1').hide();
-              $('#player2').hide();
-              $('#player3').hide();
-              $('#player4').hide();
-            }
-            else if (player_num == 2){
-              $('#player1').show();
-              $('#player2').hide();
-              $('#player3').hide();
-              $('#player4').hide();
-            }
-            else if (player_num == 3){
-              $('#player1').show();
-              $('#player2').show();
-              $('#player3').hide();
-              $('#player4').hide();
-            }
-            else if (player_num == 4){
-              $('#player1').show();
-              $('#player2').show();
-              $('#player3').show();
-              $('#player4').hide();
-            }
-            else if (player_num == 5){
-              $('#player1').show();
-              $('#player2').show();
-              $('#player3').show();
-              $('#player4').show();
-            }
-        }
-    </script>
 {% endblock %}

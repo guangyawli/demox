@@ -5,7 +5,7 @@ from accounts.models import MailServer, Emails, UserProfile, OauthProvider
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'check_code')
+    list_display = ('user', 'check_code', 'real_name', 'school', 'department', 'role_flag')
 
 
 class EmailsAdmin(admin.ModelAdmin):

@@ -15,8 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from accounts.views import index, UserLoginAPI2, sign_in, log_out, my_profile, activate_user, request_reset, reset_user,\
-    resend_active_letter
+from accounts.views import index, UserLoginAPI2, sign_in, log_out, my_profile
 
 urlpatterns = [
     path('', index, name='account_home'),
@@ -24,9 +23,9 @@ urlpatterns = [
     path('login/', sign_in, name='Login'),
     path('rlogin/', UserLoginAPI2, name='rlogin'),
     path('logout/', log_out, name='Logout'),
-    path('profile/', my_profile, name='Profile'),
-    path('activate/<str:active_key>/<str:token>/', activate_user, name='activate_user'),
-    path('reset_request/', request_reset, name='request_reset'),
-    path('reset_password/<str:active_key>/<str:token>/', reset_user, name='reset_user'),
-    path('resend_confirm/', resend_active_letter, name='resend_active_letter'),
+    path('profile/', my_profile, name='my_profile'),
+    # path('activate/<str:active_key>/<str:token>/', activate_user, name='activate_user'),
+    # path('reset_request/', request_reset, name='request_reset'),
+    # path('reset_password/<str:active_key>/<str:token>/', reset_user, name='reset_user'),
+    # path('resend_confirm/', resend_active_letter, name='resend_active_letter'),
 ]

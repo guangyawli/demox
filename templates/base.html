@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
     <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.css"  />
     <title>Coding101-{% block title %}{% endblock %} </title>
     {% block STYLEcontent %}
     {% endblock %}
@@ -35,8 +36,7 @@
                     {{ request.user.username }}，您好
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{% url  'file_list' %}">我的作品</a>
-                    <a class="dropdown-item" href="{% url  'show_team' %}">隊伍資料</a>
+                    <a class="dropdown-item" href="{% url  'my_profile' %}">我的資料</a>
                     <a class="dropdown-item" href="{% url  'Logout' %}">登出</a>
                 </div>
               </li>
@@ -52,13 +52,24 @@
         </div>
     </nav>
     {% block error_content %}
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.js"></script>
+        {% for message in messages %}
+        <script>
+            new Noty({
+                type:'{{ message.tags }}',
+                text: '{{ message }}',
+                timeout: 3000,
+            }).show();
+        </script>
+        {% endfor %}
     {% endblock %}
     {% block content %}
     {% endblock %}
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" ></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+
     {% block JScontent %}
     {% endblock %}
 </body>
