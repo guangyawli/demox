@@ -76,6 +76,7 @@ def UserLoginAPI2(request):
         user = auth.authenticate(username=eval(r.text)['username'], password=eval(r.text)['id'])
         if user:
             auth.login(request, user)
+            messages.add_message(request, messages.SUCCESS, '登入成功')
         return HttpResponseRedirect(provider_host)
     elif r.status_code == 200:
         user = User.objects.create(username=eval(r.text)['username'], email=eval(r.text)["email"])
@@ -83,6 +84,7 @@ def UserLoginAPI2(request):
         user.save()
         UserProfile.objects.create(user=user)
         auth.login(request, user)
+        messages.add_message(request, messages.SUCCESS, '帳號新增成功')
         return HttpResponseRedirect(provider_host)
     else:
         messages.add_message(request, messages.ERROR, '帳號不存在，請重新登入')
