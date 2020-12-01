@@ -237,6 +237,47 @@ def apply_master(request, active_key, token):
                 messages.add_message(request, messages.SUCCESS, '寄出確認信')
             elif active_key == 'disagree':
                 messages.add_message(request, messages.ERROR, '審核不通過')
+                # my_host = OauthProvider.objects.get(provider_name='openedu').my_host
+                tprofile = UserProfile.objects.get(user=request.user)
+                tprofile.master_status = 'not_master'
+                tprofile.save()
+                tmp_server = MailServer.objects.get(id=1)
+
+                conn = get_connection()
+                conn.username = tmp_server.m_user  # username
+                conn.password = tmp_server.m_password  # password
+                conn.host = tmp_server.m_server  # mail server
+                conn.open()
+
+                target_mails = []
+                target_mails.append(tprofile.master_email)
+                # logging.debug(str(target_mails) + str(datetime.now()))
+
+                test_from = Emails.objects.get(e_status='apply_for_master_fail').e_from
+                test_title = Emails.objects.get(e_status='apply_for_master_fail').e_title
+                announcement = Emails.objects.get(e_status='apply_for_master_fail').e_content
+                context = {
+                    # 'my_host': my_host,
+                    # 'active_key': user.username,
+                    # 'check_token': tprofile.check_code
+                    'announcement': announcement
+                }
+                # print(courses.course_name)
+                email_template_name = 'accounts/mail_master_check_fail.html'
+                t = loader.get_template(email_template_name)
+
+                mail_list = target_mails
+
+                subject, from_email, to = test_title, test_from, mail_list
+                html_content = t.render(dict(context))  # str(test_content)
+                # msg = EmailMultiAlternatives(subject, html_content, from_email, bcc=to)
+                msg = EmailMultiAlternatives(subject, html_content, from_email, to=to)
+                msg.attach_alternative(html_content, "text/html")
+                # msg.attach_file(STATIC_ROOT + 'insights_readme.pdf')
+                conn.send_messages([msg, ])  # send_messages发送邮件
+
+                conn.close()
+
         elif user.userprofile.master_status == 'apply':
             messages.add_message(request, messages.WARNING, '該帳號已經為策展者')
         else:
