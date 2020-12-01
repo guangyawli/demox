@@ -259,6 +259,7 @@ def activate_master(request, active_key, token):
     elif user.userprofile.master_status == 'pending':
         tprofile = UserProfile.objects.get(user=user)
         tprofile.master_status = 'apply'
+        tprofile.role_flag = 'master'
         tprofile.save()
         messages.add_message(request, messages.SUCCESS, '策展者啟用成功')
         return redirect('home')
