@@ -186,61 +186,65 @@ def send_apply(request):
 
 @login_required()
 def apply_master(request, active_key, token):
-    try:
-        user = User.objects.get(userprofile__check_code=token)
-    except User.DoesNotExist:
-        messages.add_message(request, messages.ERROR, '該帳號不存在')
-        return redirect('home')
-    if user.userprofile.master_status == 'pending':
-        if active_key == 'agree':
-            messages.add_message(request, messages.SUCCESS, '審核通過')
-            my_host = OauthProvider.objects.get(provider_name='openedu').my_host
-            tprofile = UserProfile.objects.get(user=request.user)
-            tmp_server = MailServer.objects.get(id=1)
+    if request.user.is_staff:
+        try:
+            user = User.objects.get(userprofile__check_code=token)
+        except User.DoesNotExist:
+            messages.add_message(request, messages.ERROR, '該帳號不存在')
+            return redirect('home')
 
-            conn = get_connection()
-            conn.username = tmp_server.m_user  # username
-            conn.password = tmp_server.m_password  # password
-            conn.host = tmp_server.m_server  # mail server
-            conn.open()
+        if user.userprofile.master_status == 'pending':
+            if active_key == 'agree':
+                messages.add_message(request, messages.SUCCESS, '審核通過')
+                my_host = OauthProvider.objects.get(provider_name='openedu').my_host
+                tprofile = UserProfile.objects.get(user=request.user)
+                tmp_server = MailServer.objects.get(id=1)
 
-            target_mails = []
-            target_mails.append(tprofile.master_email)
-            # logging.debug(str(target_mails) + str(datetime.now()))
+                conn = get_connection()
+                conn.username = tmp_server.m_user  # username
+                conn.password = tmp_server.m_password  # password
+                conn.host = tmp_server.m_server  # mail server
+                conn.open()
 
-            test_from = Emails.objects.get(e_status='apply_for_master').e_from
-            test_title = Emails.objects.get(e_status='apply_for_master').e_title
-            # announcement = Emails.objects.get(e_status='default').e_content
-            context = {
-                'my_host': my_host,
-                'active_key': user.username,
-                'check_token': tprofile.check_code
-            }
-            # print(courses.course_name)
-            email_template_name = 'accounts/mail_apply_for_master.html'
-            t = loader.get_template(email_template_name)
+                target_mails = []
+                target_mails.append(tprofile.master_email)
+                # logging.debug(str(target_mails) + str(datetime.now()))
 
-            mail_list = target_mails
+                test_from = Emails.objects.get(e_status='apply_for_master').e_from
+                test_title = Emails.objects.get(e_status='apply_for_master').e_title
+                # announcement = Emails.objects.get(e_status='default').e_content
+                context = {
+                    'my_host': my_host,
+                    'active_key': user.username,
+                    'check_token': tprofile.check_code
+                }
+                # print(courses.course_name)
+                email_template_name = 'accounts/mail_apply_for_master.html'
+                t = loader.get_template(email_template_name)
 
-            subject, from_email, to = test_title, test_from, mail_list
-            html_content = t.render(dict(context))  # str(test_content)
-            # msg = EmailMultiAlternatives(subject, html_content, from_email, bcc=to)
-            msg = EmailMultiAlternatives(subject, html_content, from_email, to=to)
-            msg.attach_alternative(html_content, "text/html")
-            # msg.attach_file(STATIC_ROOT + 'insights_readme.pdf')
-            conn.send_messages([msg, ])  # send_messages发送邮件
+                mail_list = target_mails
 
-            conn.close()
+                subject, from_email, to = test_title, test_from, mail_list
+                html_content = t.render(dict(context))  # str(test_content)
+                # msg = EmailMultiAlternatives(subject, html_content, from_email, bcc=to)
+                msg = EmailMultiAlternatives(subject, html_content, from_email, to=to)
+                msg.attach_alternative(html_content, "text/html")
+                # msg.attach_file(STATIC_ROOT + 'insights_readme.pdf')
+                conn.send_messages([msg, ])  # send_messages发送邮件
 
-            messages.add_message(request, messages.SUCCESS, '寄出確認信')
-        elif active_key == 'disagree':
-            messages.add_message(request, messages.ERROR, '審核不通過')
-        return redirect('home')
-    elif user.userprofile.master_status == 'apply':
-        messages.add_message(request, messages.WARNING, '該帳號已經為策展者')
+                conn.close()
+
+                messages.add_message(request, messages.SUCCESS, '寄出確認信')
+            elif active_key == 'disagree':
+                messages.add_message(request, messages.ERROR, '審核不通過')
+        elif user.userprofile.master_status == 'apply':
+            messages.add_message(request, messages.WARNING, '該帳號已經為策展者')
+        else:
+            messages.add_message(request, messages.ERROR, '策展者帳號 未申請/申請未通過 ')
     else:
-        messages.add_message(request, messages.ERROR, '策展者帳號 未申請/申請未通過 ')
-        return redirect('home')
+        messages.add_message(request, messages.ERROR, '權限不足')
+
+    return redirect('home')
 
 
 def activate_master(request, active_key, token):
