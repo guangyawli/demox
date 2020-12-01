@@ -24,7 +24,7 @@ class MailServer(models.Model):
 
 class OauthProvider(models.Model):
     provider_name = models.CharField(max_length=30, verbose_name='Provider名稱', default='openedu')
-    provider_host = models.CharField(max_length=40, verbose_name='host網址', default='https://courses-api.openedu.tw')
+    my_host = models.CharField(max_length=40, verbose_name='host網址', default='https://demox.coding101.tw')
     client_id = models.CharField(max_length=80, verbose_name='Client ID')
     client_secret = models.CharField(max_length=150, verbose_name='Client Secret')
     requestapi = models.CharField(max_length=70, verbose_name='api網址',
@@ -46,7 +46,14 @@ class UserProfile(models.Model):
     real_name = models.CharField(max_length=30, blank=True, verbose_name='真實姓名')
     school = models.CharField(max_length=60, blank=True, verbose_name='學校')
     department = models.CharField(max_length=90, blank=True, verbose_name='系所')
-    role_flag = models.CharField(max_length=20, blank=True, verbose_name='身份', default='設計者')
+    # role_flag = models.CharField(max_length=20, blank=True, verbose_name='身份', default='設計者')
+    role_flag = models.CharField(max_length=20, verbose_name='身份', choices=(('author', '設計者'), ('master', '策展者')),
+                                 default='author')
+    master_url = models.URLField(max_length=120, blank=True, verbose_name='系所網頁')
+    master_email = models.EmailField(max_length=60, blank=True, verbose_name='驗證信箱')
+    master_status = models.CharField(max_length=20, verbose_name='處理狀態',
+                                     choices=(('not_master', '未申請/未通過'), ('apply', '申請通過'), ('pending', '審核中')),
+                                     default='not_master')
 
     def __str__(self):
         return self.user.username

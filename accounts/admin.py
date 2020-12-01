@@ -5,7 +5,8 @@ from accounts.models import MailServer, Emails, UserProfile, OauthProvider
 
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'check_code', 'real_name', 'school', 'department', 'role_flag')
+    list_display = ('user', 'check_code', 'real_name', 'school', 'department', 'role_flag', 'master_email',
+                    'master_status')
 
 
 class EmailsAdmin(admin.ModelAdmin):
@@ -17,7 +18,7 @@ class MailServerAdmin(admin.ModelAdmin):
 
 
 class OauthProviderAdmin(admin.ModelAdmin):
-    list_display = ('provider_name', 'provider_host')
+    list_display = ('provider_name', 'my_host')
 
 
 admin.site.register(Emails, EmailsAdmin)

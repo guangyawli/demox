@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
-{% block title %}我的資料{% endblock  %}
+{% block title %}策展者申請{% endblock  %}
 {% block content %}
     <section class="bottom" id="table-section">
         <div class="container">
-            <h2 class="title">我的資料</h2>
-            <p class="sub_title">檢視我的個人資訊</p>
-            <a class="tmp-item" href="{% url  'apply_to' %}">申請為策展者</a>
+            <h2 class="title">申請資料</h2>
+{#            <p class="sub_title">檢視我的個人資訊</p>#}
+{#            <a class="tmp-item" href="{% url  'apply_to' %}">申請為策展者</a>#}
             <div class="content-box table-responsive">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                      <h3 class="title">我的資料</h3>
+                      <h3 class="title">申請資料</h3>
                       <div class="form-row">
                         <div class="col-md-6 mb-3">
                           <label for="validationDefault02">真實姓名</label>
@@ -24,8 +24,12 @@
                           {{ target_form.department }}
                         </div>
                         <div class="col-md-6 mb-3">
-                          <label for="validationDefault02">身份</label><br>
-                          {{ role_status }}
+                          <label for="validationDefault02">學校個人主頁</label><br>
+                          {{ target_form.master_url }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="validationDefault02">學校信箱</label><br>
+                          {{ target_form.master_email }}
                         </div>
                       </div>
                       <hr>

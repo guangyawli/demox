@@ -19,14 +19,33 @@ class LoginForm(forms.Form):
 class ProfileForm(ModelForm):
     class Meta:
         model = UserProfile
-        exclude = ['check_code', 'user', 'role_flag']
+        exclude = ['check_code', 'user', 'role_flag', 'master_url', 'master_email', 'master_status']
         widgets = {
-            'real_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '李小明',
+            'real_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '填寫真實姓名',
                                                 'id': 'id_real_name'}),
-            'school': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '任職/就讀學校',
+            'school': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '填寫任職/就讀學校',
                                              'id': 'id_school'}),
-            'department': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '資訊工程學系',
+            'department': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '填寫任職/就讀科系',
                                                  'id': 'id_department'})
+        }
+
+
+class ApplyMasterForm(ModelForm):
+    class Meta:
+        model = UserProfile
+        exclude = ['check_code', 'user', 'role_flag', 'master_status']
+        widgets = {
+            'real_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '填寫真實姓名',
+                                                'id': 'id_real_name'}),
+            'school': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '填寫任職學校',
+                                             'id': 'id_school'}),
+            'department': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '填寫任職科系',
+                                                 'id': 'id_department'}),
+            'master_url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '填寫任職學校個人主頁（含Email）',
+                                                 'id': 'id_master_url'}),
+            'master_email': forms.EmailInput(attrs={'class': 'form-control',
+                                                    'placeholder': '填寫任職學校Email(例如：xxx.edu.tw)',
+                                                    'id': 'id_master_email'})
         }
 
 

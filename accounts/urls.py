@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from accounts.views import index, UserLoginAPI2, sign_in, log_out, my_profile
+from accounts.views import index, UserLoginAPI2, sign_in, log_out, my_profile, apply_to, activate_master, send_apply, \
+    apply_master
 
 urlpatterns = [
     path('', index, name='account_home'),
@@ -24,7 +25,11 @@ urlpatterns = [
     path('rlogin/', UserLoginAPI2, name='rlogin'),
     path('logout/', log_out, name='Logout'),
     path('profile/', my_profile, name='my_profile'),
-    # path('activate/<str:active_key>/<str:token>/', activate_user, name='activate_user'),
+    path('applyto/', apply_to, name='apply_to'),
+    path('send_apply/', send_apply, name='send_apply'),
+    path('activate/<str:active_key>/<str:token>/', activate_master, name='activate_master'),
+    path('apply_master/<str:active_key>/<str:token>/', apply_master, name='apply_master'),
+
     # path('reset_request/', request_reset, name='request_reset'),
     # path('reset_password/<str:active_key>/<str:token>/', reset_user, name='reset_user'),
     # path('resend_confirm/', resend_active_letter, name='resend_active_letter'),
