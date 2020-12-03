@@ -197,7 +197,7 @@ def apply_master(request, active_key, token):
             if active_key == 'agree':
                 messages.add_message(request, messages.SUCCESS, '審核通過')
                 my_host = OauthProvider.objects.get(provider_name='openedu').my_host
-                tprofile = UserProfile.objects.get(user=request.user)
+                tprofile = UserProfile.objects.get(user=user)
                 tmp_server = MailServer.objects.get(id=1)
 
                 conn = get_connection()
@@ -238,7 +238,7 @@ def apply_master(request, active_key, token):
             elif active_key == 'disagree':
                 messages.add_message(request, messages.ERROR, '審核不通過')
                 # my_host = OauthProvider.objects.get(provider_name='openedu').my_host
-                tprofile = UserProfile.objects.get(user=request.user)
+                tprofile = UserProfile.objects.get(user=user)
                 tprofile.master_status = 'not_master'
                 tprofile.save()
                 tmp_server = MailServer.objects.get(id=1)

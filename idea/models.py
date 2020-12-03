@@ -1,9 +1,9 @@
-from datetime import datetime
-import os
-import uuid
-
-from django.core import validators
-from django.db import models
+# from datetime import datetime
+# import os
+# import uuid
+#
+# from django.core import validators
+# from django.db import models
 from django.contrib.auth.models import User
 
 
